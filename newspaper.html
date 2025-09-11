@@ -8,22 +8,30 @@
   <style>
     :root{
       --sidebar-w: 320px;
-      --bg: #0b0c0e;           /* dark to match sidebar */
-      --panel: #101215;
-      --ink: #e5e7eb;
-      --muted: #9ca3af;
-      --border: rgba(255,255,255,0.08);
-      --accent: #22d3ee;
+
+      /* Light theme */
+      --ink: #0f172a;             /* text */
+      --muted: #475569;           /* muted text */
+      --border: rgba(15,23,42,0.12);
+      --accent: #0ea5a4;          /* teal */
+
+      --panel: #ffffff;           /* cards/panels */
+      --panel-head: #f1f5f9;      /* panel header */
+      --viewer-bg: #f8fafc;       /* preview area */
+      --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
     }
+
     *{ box-sizing: border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      background: linear-gradient(135deg, #0b0c0e 0%, #0f1220 100%);
       color: var(--ink);
       font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
       display:flex;
       min-height:100vh;
+
+      /* Light blue gradient page background */
+      background: linear-gradient(135deg, #e0f2fe 0%, #eaf2ff 50%, #f5f3ff 100%);
     }
 
     /* Layout */
@@ -32,7 +40,7 @@
       width: var(--sidebar-w);
       flex: 0 0 var(--sidebar-w);
       border-right: 1px solid var(--border);
-      background: #0b0c0e;
+      background: transparent;            /* let page bg show */
       position: sticky; top:0; height:100vh;
     }
     .sidebar-frame{ width:100%; height:100%; border:0; }
@@ -58,10 +66,12 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow:hidden;
+      box-shadow: var(--shadow);
     }
     .panel-head{
       display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:12px 14px; border-bottom:1px solid var(--border);
+      gap:12px; padding:12px 14px; background: var(--panel-head);
+      border-bottom:1px solid var(--border);
     }
     .meta{
       display:flex; gap:12px; align-items:center; flex-wrap:wrap;
@@ -69,20 +79,22 @@
     }
     .btn{
       appearance:none; border:1px solid var(--border);
-      background:#141821; color:var(--ink);
-      padding:10px 14px; border-radius:12px; font-weight:600; cursor:pointer;
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      color:#fff;
+      padding:10px 14px; border-radius:12px; font-weight:700; cursor:pointer;
     }
-    .btn:hover{ filter:brightness(1.08); }
+    .btn:hover{ filter:brightness(1.05); }
 
     .viewer{
-      background:#000; display:flex; align-items:center; justify-content:center;
+      background: var(--viewer-bg);
+      display:flex; align-items:center; justify-content:center;
       min-height: 70vh;
     }
     .viewer object,
     .viewer iframe,
     .viewer img,
     .viewer video{
-      width:100%; height:80vh; max-height:82vh; border:0; display:block; object-fit:contain; background:#000;
+      width:100%; height:80vh; max-height:82vh; border:0; display:block; object-fit:contain; background:#fff;
     }
 
     /* Empty state */
@@ -101,7 +113,7 @@
 </head>
 <body>
   <div class="shell">
-    <!-- Left: your reusable sidebar -->
+    <!-- Left: reusable black sidebar -->
     <aside class="sidebar-wrap">
       <iframe class="sidebar-frame" src="sidebar.html" title="Sidebar"></iframe>
     </aside>
@@ -116,7 +128,7 @@
       <section class="panel" id="panel" hidden>
         <div class="panel-head">
           <div class="meta">
-            <strong id="issue-title" style="color:#fff;"></strong>
+            <strong id="issue-title" style="color:#0f172a;"></strong>
             <span id="updated"></span>
           </div>
           <div class="actions">
@@ -129,20 +141,16 @@
 
       <section class="panel" id="empty-panel">
         <div class="empty">
-          <div class="empty-title">No newspaper available (yet).</div>
-          <div class="empty-note">If you’re not seeing anything, the editors haven’t published an issue to this feed.</div>
+          <div class="empty-title">No newspaper available right now.</div>
+          <div class="empty-note">This tab is view-only. Publishing happens on a separate private page.</div>
           <button class="btn" id="try-again">Check again</button>
-          <div class="small" style="margin-top:10px;">
-            This page is view-only. Uploading happens on a separate, private page.
-          </div>
         </div>
       </section>
     </main>
   </div>
 
   <script>
-    // Where we look for metadata published by the (hidden) editor/uploader page.
-    // Provide multiple candidates so it works on GitHub Pages or a /newspaper/ subfolder.
+    // Read-only: looks for a small metadata file that the private uploader publishes.
     const CANDIDATE_FEEDS = [
       'latest.json',
       './latest.json',
@@ -202,7 +210,7 @@
     function renderIssue(meta){
       const { title, src, type, updated_at } = meta || {};
       if(!src){
-        renderEmpty('Nothing published yet.');
+        renderEmpty('No newspaper available right now.');
         return;
       }
 
@@ -218,26 +226,25 @@
       let node;
 
       if (kind === 'pdf'){
-        // object -> better PDF support; provides fallback link if viewer blocked
-        node = document.createElement('object');
-        node.type = 'application/pdf';
-        node.data = src;
+        const obj = document.createElement('object');
+        obj.type = 'application/pdf';
+        obj.data = src;
+        obj.style.background = '#fff';
         const fallback = document.createElement('div');
         fallback.style.padding = '18px';
-        fallback.innerHTML = `
-          <p>Can’t preview the PDF here. <a href="${src}" target="_blank" rel="noopener">Open in a new tab</a>.</p>
-        `;
-        node.appendChild(fallback);
+        fallback.innerHTML = `<p>Can’t preview the PDF here. <a href="${src}" target="_blank" rel="noopener">Open in a new tab</a>.</p>`;
+        obj.appendChild(fallback);
+        node = obj;
       } else if (kind === 'image'){
         node = document.createElement('img');
         node.src = src;
         node.alt = title || 'Newspaper';
+        node.style.background = '#fff';
       } else if (kind === 'video'){
         node = document.createElement('video');
         node.src = src;
         node.controls = true;
       } else {
-        // Unknown: show a simple link
         const link = document.createElement('a');
         link.href = src;
         link.target = '_blank';
@@ -258,7 +265,7 @@
     async function loadLatest(){
       statusEl.textContent = 'Loading latest issue…';
       try{
-        // Allow override via query ?src=... for quick manual testing
+        // Optional quick test: ?src=https://example.com/issue.pdf
         const params = new URLSearchParams(location.search);
         const directSrc = params.get('src');
         if(directSrc){
@@ -272,7 +279,7 @@
           return;
         }
 
-        // expected JSON shape:
+        // expected JSON:
         // { "title": "May Issue", "src": "https://.../issue.pdf", "type": "pdf|image|video", "updated_at": "2025-09-10T12:00:00Z" }
         renderIssue(found.data);
       }catch(e){
