@@ -7,136 +7,124 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg1:#0ea5a4; /* default teal -> will be overridden by theme */
-      --bg2:#2563eb;
-      --panel:rgba(15,23,42,.35);
-      --panel-2:rgba(255,255,255,.06);
-      --text:#e5e7eb;
-      --muted:#a8b3cf;
-      --ink:#0f172a;
-      --ring:rgba(255,255,255,.2);
+      --sky-50:#eaf3ff;         /* page bg */
+      --sky-100:#e3f2fd;        /* card bg tint */
+      --sky-200:#cfe8ff;        /* soft borders */
+      --sky-600:#1e88e5;        /* primary */
+      --sky-700:#1976d2;        /* primary hover */
+      --ink:#0f172a;            /* deep text */
+      --muted:#64748b;          /* secondary text */
+      --chip:#eef6ff;
+      --shadow:0 10px 26px rgba(2, 32, 71, .12);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family:"Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
+      color:var(--ink);
       display:flex;
-      background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+      background:var(--sky-50);
     }
-    /* Layout */
+
+    /* Sidebar slot */
     #sidebar-container{width:260px;flex:0 0 260px}
-    .app{
-      flex:1;min-width:0;max-height:100vh;
-      display:grid;grid-template-rows:auto 1fr auto;
-      backdrop-filter:saturate(120%);
-    }
+
+    /* App layout */
+    .app{flex:1;min-width:0;max-height:100vh;display:grid;grid-template-rows:auto 1fr auto}
     header{
       display:flex;align-items:center;gap:12px;
-      padding:16px 20px;background:var(--panel);
-      border-bottom:1px solid rgba(255,255,255,.08);
+      padding:14px 18px;background:#fff;border-bottom:1px solid var(--sky-200);
+      position:sticky;top:0;z-index:5;
     }
-    header h1{margin:0;font-size:22px;font-weight:700}
-    .pill{
-      margin-left:auto;font-size:12px;font-weight:700;
-      background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px
+    header h1{margin:0;font-size:22px;font-weight:700;color:#0b305b}
+    .role{
+      margin-left:auto;display:flex;gap:10px;align-items:center;
+      font-size:12px;color:var(--muted)
     }
-    /* Message list */
-    .stream{
-      overflow:auto;padding:18px 20px 8px;display:flex;flex-direction:column;gap:12px
-    }
+    .pill{background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:700;color:#195d9b}
+
+    /* Stream */
+    .stream{overflow:auto;padding:18px;display:flex;flex-direction:column;gap:14px}
     .card{
-      align-self:flex-start;max-width:min(780px,100%);
-      background:var(--panel);border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;box-shadow:0 10px 26px rgba(0,0,0,.18);
-      display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px
+      background:#fff;border:1px solid var(--sky-200);border-radius:16px;box-shadow:var(--shadow);
+      display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 16px;
     }
-    .card.me{align-self:flex-end;background:rgba(255,255,255,.12)}
     .avatar{
       width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
-      background:var(--panel-2);border:1px solid rgba(255,255,255,.14);font-weight:700
+      background:var(--sky-100);color:#195d9b;font-weight:800;border:1px solid var(--sky-200)
     }
-    .msg{
-      display:flex;flex-direction:column;gap:8px;min-width:0
-    }
+    .msg{display:flex;flex-direction:column;gap:8px;min-width:0}
     .meta{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted)}
-    .body{white-space:pre-wrap;word-wrap:break-word;line-height:1.4}
-    .body a{color:#fff;text-decoration:underline}
-    .attachments{display:flex;flex-wrap:wrap;gap:8px}
+    .body{white-space:pre-wrap;word-wrap:break-word;line-height:1.5}
+    .body a{color:var(--sky-700);text-decoration:underline;word-break:break-word}
+
+    .attachments{display:flex;flex-wrap:wrap;gap:10px}
     .thumb{
-      width:160px;height:100px;overflow:hidden;border-radius:12px;
-      border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06)
+      width:200px;max-width:42vw;height:130px;overflow:hidden;border-radius:12px;border:1px solid var(--sky-200);
+      background:var(--sky-100)
     }
     .thumb img{width:100%;height:100%;object-fit:cover;display:block}
     .link-card{
-      min-width:260px;max-width:420px;display:flex;align-items:center;gap:10px;
-      padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14)
+      min-width:260px;max-width:520px;display:flex;align-items:center;gap:10px;
+      padding:10px 12px;border-radius:12px;background:var(--sky-100);border:1px solid var(--sky-200)
     }
     .link-card img{width:16px;height:16px;border-radius:4px}
     .actions{margin-left:auto;display:flex;gap:8px}
     .icon-btn{
-      background:transparent;border:1px solid rgba(255,255,255,.18);
-      border-radius:10px;color:var(--text);padding:6px 8px;cursor:pointer
+      background:#fff;border:1px solid var(--sky-200);
+      border-radius:10px;color:#143a6b;padding:6px 10px;cursor:pointer
     }
-    .icon-btn:hover{background:rgba(255,255,255,.08)}
+    .icon-btn:hover{background:var(--chip)}
+
     /* Composer */
     .composer{
-      display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 16px;
-      background:var(--panel);border-top:1px solid rgba(255,255,255,.08)
+      background:#fff;border-top:1px solid var(--sky-200);
+      padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px
     }
-    .inputs{
-      display:grid;grid-template-rows:auto auto;gap:10px
-    }
-    .field{
-      display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center
-    }
+    .inputs{display:grid;grid-template-rows:auto auto auto;gap:10px}
     textarea{
       width:100%;min-height:64px;max-height:200px;resize:vertical;
-      background:rgba(255,255,255,.08);color:var(--text);
-      border:1px solid var(--ring);border-radius:12px;padding:12px;font-size:14px;outline:none
+      background:var(--sky-100);border:1px solid var(--sky-200);border-radius:12px;
+      padding:12px;font-size:14px;color:var(--ink);outline:none
     }
     input[type="url"]{
-      width:100%;height:40px;background:rgba(255,255,255,.08);color:var(--text);
-      border:1px solid var(--ring);border-radius:12px;padding:0 12px;font-size:14px;outline:none
+      width:100%;height:40px;background:var(--sky-100);border:1px solid var(--sky-200);border-radius:12px;
+      padding:0 12px;font-size:14px;outline:none
     }
-    .btn{
-      height:40px;padding:0 14px;border:none;border-radius:12px;font-weight:700;cursor:pointer
-    }
-    .btn-ghost{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--ring)}
-    .btn-ghost:hover{background:rgba(255,255,255,.14)}
-    .btn-send{background:#fff;color:var(--ink)}
-    .btn-send:hover{filter:brightness(.96)}
+    .btn{height:40px;padding:0 16px;border:none;border-radius:12px;font-weight:800;cursor:pointer}
+    .btn-ghost{background:var(--sky-100);border:1px solid var(--sky-200);color:#0b305b}
+    .btn-ghost:hover{background:#fff}
+    .btn-send{background:var(--sky-700);color:#fff}
+    .btn-send:hover{background:#1558b5}
+
     .previews{display:flex;gap:10px;flex-wrap:wrap}
-    .chip{
-      background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
-      padding:6px 8px;border-radius:10px;font-size:12px;display:flex;gap:8px;align-items:center
-    }
-    .chip button{border:none;background:transparent;color:#fff;cursor:pointer}
-    /* Drop zone */
+    .chip{background:var(--chip);border:1px solid var(--sky-200);padding:6px 8px;border-radius:10px;font-size:12px;display:flex;gap:8px;align-items:center}
+    .chip button{border:none;background:transparent;color:#0b305b;cursor:pointer}
+
     .drop{
-      border:2px dashed rgba(255,255,255,.22);
-      border-radius:12px;padding:10px;text-align:center;color:var(--muted);
-      transition:all .15s ease
+      border:2px dashed var(--sky-200);border-radius:12px;padding:10px;text-align:center;
+      color:var(--muted);transition:all .15s ease;background:var(--sky-100)
     }
-    .drop.dragging{background:rgba(255,255,255,.08);color:#fff}
-    /* Responsive */
-    @media(max-width:900px){
+    .drop.dragging{background:#fff;color:#113d6e}
+
+    @media (max-width:900px){
       #sidebar-container{display:none}
       .app{grid-template-rows:auto 1fr auto}
     }
   </style>
 </head>
 <body>
-  <!-- Shared Sidebar -->
+  <!-- Shared Sidebar (reused across pages) -->
   <div id="sidebar-container"></div>
 
   <!-- App -->
   <div class="app">
     <header>
       <h1>Main Hallway</h1>
-      <span class="pill" id="theme-pill">Theme: Teal</span>
+      <div class="role">
+        <span class="pill" id="user-pill">Anonymous</span>
+      </div>
     </header>
 
     <!-- Messages -->
@@ -145,145 +133,131 @@
     <!-- Composer -->
     <form id="composer" class="composer" autocomplete="off">
       <div class="inputs">
-        <div class="field">
-          <textarea id="text" placeholder="Say something inspiring… (Shift+Enter = newline)"></textarea>
+        <textarea id="text" placeholder="Announce something to the hallway… (Shift+Enter = new line)"></textarea>
+
+        <div style="display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center">
+          <input id="linkInput" type="url" placeholder="Paste a link (https://…)" />
           <label for="file" class="btn btn-ghost" title="Add images">+ Images</label>
           <input id="file" type="file" accept="image/*" multiple hidden>
-          <button type="button" id="addLinkBtn" class="btn btn-ghost" title="Attach link">+ Link</button>
         </div>
-        <div id="linkRow" class="field" style="display:none">
-          <input id="linkInput" type="url" placeholder="Paste a link (https://…)">
-          <button type="button" id="attachLink" class="btn btn-ghost">Attach</button>
-          <button type="button" id="cancelLink" class="btn btn-ghost">Cancel</button>
-        </div>
+
         <div id="drop" class="drop">Drag & drop images or links here</div>
         <div class="previews" id="previews"></div>
       </div>
+
       <div>
-        <button class="btn btn-send" id="sendBtn" type="submit">Send</button>
+        <button class="btn btn-send" id="sendBtn" type="submit">Post</button>
       </div>
     </form>
   </div>
 
-  <script>
-    // ---------- Theme from sidebar selection ----------
-    (function applyTheme(){
-      const theme = localStorage.getItem("theme") || "teal";
-      const pill = document.getElementById("theme-pill");
-      const colors = {
-        teal:["#0ea5a4","#2563eb"],
-        blue:["#2563eb","#1e40af"],
-        green:["#16a34a","#0ea5a4"],
-        purple:["#7e22ce","#2563eb"],
-      };
-      const pair = colors[theme] || colors.teal;
-      document.documentElement.style.setProperty("--bg1", pair[0]);
-      document.documentElement.style.setProperty("--bg2", pair[1]);
-      pill.textContent = "Theme: " + theme[0].toUpperCase()+theme.slice(1);
-    })();
-
-    // ---------- Sidebar loader ----------
+  <!-- Firebase + App -->
+  <script type="module">
+    // ----- Load shared sidebar -----
     (function loadSidebar(){
       const c = document.getElementById("sidebar-container");
       fetch("sidebar.html").then(r=>r.text()).then(html=>c.innerHTML=html).catch(()=>{});
     })();
 
-    // ---------- Storage ----------
-    const KEY="twh_hallway_messages_v1";
-    const me = JSON.parse(localStorage.getItem("twh_profile") || '{"name":"You"}');
+    // ----- Firebase (CDN modular SDK) -----
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInAnonymously, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp,
+      getCountFromServer, limit, getDocs, doc, deleteDoc, where
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      getStorage, ref as sref, uploadBytesResumable, getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-    function getAll(){
-      try{ return JSON.parse(localStorage.getItem(KEY) || "[]"); }
-      catch{ return []; }
-    }
-    function saveAll(items){
-      localStorage.setItem(KEY, JSON.stringify(items));
-    }
+    // TODO: paste your real config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MSG_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-    // ---------- Utils ----------
-    function escapeHtml(s){
-      return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
-    function autoLink(s){
-      const urlRe = /(https?:\/\/[^\s)]+)(?![^<]*>)/g;
-      return escapeHtml(s).replace(urlRe, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-    }
-    function timeStr(t){
-      const d=new Date(t);
-      return d.toLocaleString();
-    }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    // Resize images to keep storage reasonable (maxW 1200)
-    function readAndMaybeResize(file, maxW=1200){
-      return new Promise((resolve,reject)=>{
-        const img = new Image();
-        const reader = new FileReader();
-        reader.onload = e => {
-          img.onload = () => {
-            const {width, height} = img;
-            if(width <= maxW){
-              resolve(e.target.result); // original dataURL
-              return;
-            }
-            const ratio = maxW / width;
-            const canvas = document.createElement("canvas");
-            canvas.width = maxW;
-            canvas.height = Math.round(height * ratio);
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL("image/jpeg", 0.9));
-          };
-          img.onerror = reject;
-          img.src = e.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
+    // ----- Simple identity (anonymous, but named) -----
+    const userPill = document.getElementById("user-pill");
+    onAuthStateChanged(auth, async (u) => {
+      if (!u) {
+        await signInAnonymously(auth);
+        return;
+      }
+      // Optional: let users set their display name in localStorage (from your profile UI)
+      const localName = localStorage.getItem("twh_displayName");
+      if (localName && !u.displayName) {
+        try { await updateProfile(u, { displayName: localName }); } catch {}
+      }
+      userPill.textContent = u.displayName || "Anonymous";
+    });
 
-    // ---------- State for new message ----------
-    const pending = { text:"", links:[], images:[] };
+    // ----- Message schema & constants -----
+    /**
+     * Firestore collection: hallwayMessages
+     * doc fields:
+     *  - uid: string
+     *  - author: string
+     *  - text: string
+     *  - links: string[]
+     *  - images: string[] (download URLs)
+     *  - createdAt: serverTimestamp
+     */
+    const COL = collection(db, "hallwayMessages");
+    const MAX_MESSAGES = 500;         // soft cap to prevent the UI from getting laggy
+    const OPTIONAL_TTL_DAYS = 0;      // set >0 to purge older than N days on load
 
-    // ---------- DOM ----------
+    // ----- DOM refs -----
     const stream = document.getElementById("stream");
     const form = document.getElementById("composer");
     const text = document.getElementById("text");
     const file = document.getElementById("file");
     const drop = document.getElementById("drop");
     const previews = document.getElementById("previews");
-
-    const linkRow = document.getElementById("linkRow");
-    const addLinkBtn = document.getElementById("addLinkBtn");
     const linkInput = document.getElementById("linkInput");
-    const attachLink = document.getElementById("attachLink");
-    const cancelLink = document.getElementById("cancelLink");
 
-    // ---------- Render ----------
-    function faviconFor(url){
-      try{
-        const u = new URL(url);
-        return "https://www.google.com/s2/favicons?domain=" + u.hostname;
-      }catch{ return ""; }
+    // State for pending attachments
+    const pending = { links: [], images: [] };
+
+    // Utils
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function autoLink(s){
+      const urlRe = /(https?:\/\/[^\s)]+)(?![^<]*>)/g;
+      return escapeHtml(s).replace(urlRe, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    }
+    function fav(url){
+      try{ return "https://www.google.com/s2/favicons?domain=" + new URL(url).hostname; }catch{ return ""; }
     }
 
-    function render(){
+    // ----- Render stream (realtime) -----
+    const qStream = query(COL, orderBy("createdAt", "asc"), limit(MAX_MESSAGES));
+    onSnapshot(qStream, (snap) => {
       stream.innerHTML = "";
-      const items = getAll();
-      for(const m of items){
-        const card = document.createElement("article");
-        card.className = "card" + (m.author === me.name ? " me" : "");
-        card.dataset.id = m.id;
+      snap.forEach(docSnap => {
+        const m = docSnap.data();
+        const id = docSnap.id;
 
+        const card = document.createElement("article");
+        card.className = "card";
         const avatar = document.createElement("div");
         avatar.className = "avatar";
-        avatar.textContent = (m.author || "U")[0].toUpperCase();
+        avatar.textContent = (m.author || "U").slice(0,1).toUpperCase();
 
         const msg = document.createElement("div");
         msg.className = "msg";
 
         const meta = document.createElement("div");
         meta.className = "meta";
-        meta.innerHTML = `<strong>${escapeHtml(m.author || "Unknown")}</strong><span>•</span><span>${timeStr(m.time)}</span>`;
+        const time = m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString() : "sending…";
+        meta.innerHTML = `<strong>${escapeHtml(m.author || "Unknown")}</strong><span>•</span><span>${time}</span>`;
 
         const body = document.createElement("div");
         body.className = "body";
@@ -292,173 +266,205 @@
         const atts = document.createElement("div");
         atts.className = "attachments";
 
-        // Links
-        for(const url of (m.links||[])){
-          const card = document.createElement("a");
-          card.className = "link-card";
-          card.href = url; card.target="_blank"; card.rel="noopener";
-          const ico = document.createElement("img");
-          ico.src = faviconFor(url); ico.alt="";
-          const span = document.createElement("span");
+        (m.links||[]).forEach(url=>{
+          const a = document.createElement("a");
+          a.className = "link-card";
+          a.href=url; a.target="_blank"; a.rel="noopener";
+          const ico=document.createElement("img"); ico.src=fav(url); ico.alt="";
+          const span=document.createElement("span");
           span.style.overflow="hidden"; span.style.whiteSpace="nowrap"; span.style.textOverflow="ellipsis";
-          span.textContent = url;
-          card.appendChild(ico); card.appendChild(span);
-          atts.appendChild(card);
-        }
-        // Images
-        for(const src of (m.images||[])){
+          span.textContent=url;
+          a.appendChild(ico); a.appendChild(span);
+          atts.appendChild(a);
+        });
+
+        (m.images||[]).forEach(src=>{
           const t = document.createElement("a");
-          t.className = "thumb";
-          t.href = src; t.target="_blank"; t.rel="noopener";
-          const img = document.createElement("img");
-          img.src = src; img.alt="Image";
-          t.appendChild(img);
-          atts.appendChild(t);
-        }
+          t.className = "thumb"; t.href=src; t.target="_blank"; t.rel="noopener";
+          const img=document.createElement("img"); img.src=src; img.alt="Image";
+          t.appendChild(img); atts.appendChild(t);
+        });
 
         const rowTop = document.createElement("div");
         rowTop.style.display="flex"; rowTop.style.alignItems="center"; rowTop.style.gap="8px";
         rowTop.appendChild(meta);
 
+        // Delete if owner
         const actions = document.createElement("div");
         actions.className = "actions";
         const del = document.createElement("button");
         del.className = "icon-btn"; del.textContent = "Delete";
-        del.addEventListener("click", ()=> removeMessage(m.id));
-        actions.appendChild(del);
+        del.addEventListener("click", async ()=>{
+          const u = auth.currentUser;
+          if (!u || (u.uid !== m.uid)) return;   // only owners delete (enforce in rules too)
+          await deleteDoc(doc(db, "hallwayMessages", id));
+        });
         rowTop.appendChild(actions);
+        // Only show button if it's the user's own message
+        onAuthStateChanged(auth, (u)=>{
+          actions.style.display = (u && u.uid === m.uid) ? "flex" : "none";
+        });
 
         msg.appendChild(rowTop);
-        if((m.text||"").trim()) msg.appendChild(body);
-        if(atts.children.length) msg.appendChild(atts);
+        if ((m.text||"").trim()) msg.appendChild(body);
+        if (atts.children.length) msg.appendChild(atts);
 
         card.appendChild(avatar);
         card.appendChild(msg);
         stream.appendChild(card);
-      }
+      });
       stream.scrollTop = stream.scrollHeight;
-    }
+    });
 
-    function removeMessage(id){
-      const items = getAll().filter(x=>x.id!==id);
-      saveAll(items); render();
-    }
-
-    // ---------- Previews (pending attachments) ----------
+    // ----- Attachments handling -----
     function refreshPreviews(){
       previews.innerHTML = "";
-      // link chips
+      // Links
       pending.links.forEach((u,i)=>{
         const chip = document.createElement("div");
-        chip.className="chip";
-        chip.innerHTML = `<img src="${faviconFor(u)}" alt="" style="width:14px;height:14px;border-radius:3px"> <span>${u}</span>`;
-        const x = document.createElement("button"); x.textContent="✕";
-        x.title="Remove link"; x.addEventListener("click",()=>{ pending.links.splice(i,1); refreshPreviews(); });
-        chip.appendChild(x);
-        previews.appendChild(chip);
+        chip.className = "chip";
+        chip.innerHTML = `<img src="${fav(u)}" alt="" style="width:14px;height:14px;border-radius:3px"> <span>${u}</span>`;
+        const x=document.createElement("button"); x.textContent="✕";
+        x.addEventListener("click",()=>{ pending.links.splice(i,1); refreshPreviews(); });
+        chip.appendChild(x); previews.appendChild(chip);
       });
-      // image thumb chips
-      pending.images.forEach((src,i)=>{
+      // Images
+      pending.images.forEach((name,i)=>{
         const chip = document.createElement("div");
-        chip.className="chip";
-        chip.innerHTML = `<span>Image ${i+1}</span>`;
-        const x = document.createElement("button"); x.textContent="✕";
-        x.title="Remove image"; x.addEventListener("click",()=>{ pending.images.splice(i,1); refreshPreviews(); });
-        chip.appendChild(x);
-        previews.appendChild(chip);
+        chip.className = "chip";
+        chip.innerHTML = `<span>${name}</span>`;
+        const x=document.createElement("button"); x.textContent="✕";
+        x.addEventListener("click",()=>{ pending.images.splice(i,1); refreshPreviews(); });
+        chip.appendChild(x); previews.appendChild(chip);
       });
     }
 
-    // ---------- Compose handlers ----------
-    addLinkBtn.addEventListener("click", ()=>{
-      linkRow.style.display="grid";
-      linkInput.focus();
-    });
-    cancelLink.addEventListener("click", ()=>{
-      linkRow.style.display="none";
+    // Link add via input or paste
+    linkInput.addEventListener("change", ()=>{
+      const v = (linkInput.value||"").trim();
+      try{ const u = new URL(v); if(/^https?:$/.test(u.protocol)){ pending.links.push(u.toString()); refreshPreviews(); } }catch(_){}
       linkInput.value="";
     });
-    attachLink.addEventListener("click", ()=>{
-      const v = (linkInput.value||"").trim();
-      try{
-        const u = new URL(v);
-        if(!/^https?:$/.test(u.protocol)) return;
-        pending.links.push(u.toString());
-        linkInput.value=""; linkRow.style.display="none";
-        refreshPreviews();
-      }catch(_){}
-    });
 
-    file.addEventListener("change", async (e)=>{
-      const files=[...e.target.files];
-      for(const f of files){
-        if(f.type.startsWith("image/")){
-          const dataUrl = await readAndMaybeResize(f);
-          pending.images.push(dataUrl);
-        }
-      }
-      file.value="";
+    // Images via picker
+    file.addEventListener("change", (e)=>{
+      [...e.target.files].forEach(f=> pending.images.push(f));
       refreshPreviews();
+      file.value="";
     });
 
-    // Drag & drop for links/images
-    ;["dragover","dragenter"].forEach(ev=>{
-      drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.add("dragging"); });
-    });
-    ;["dragleave","drop"].forEach(ev=>{
-      drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.remove("dragging"); });
-    });
-    drop.addEventListener("drop", async (e)=>{
-      // Images
-      const files=[...(e.dataTransfer.files||[])];
-      for(const f of files){
-        if(f.type.startsWith("image/")){
-          const dataUrl = await readAndMaybeResize(f);
-          pending.images.push(dataUrl);
-        }
-      }
-      // URLs (from dragged link/text)
+    // Drag & drop
+    ["dragover","dragenter"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("dragging");}));
+    ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("dragging");}));
+    drop.addEventListener("drop",(e)=>{
+      const files = [...(e.dataTransfer.files||[])];
+      files.forEach(f=>{ if(f.type.startsWith("image/")) pending.images.push(f); });
       const textData = e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text/plain");
       if(textData){
-        // Collect all http(s) URLs
-        const urls = textData.match(/https?:\/\/\S+/g) || [];
-        urls.forEach(u=>{
-          try{ const v = new URL(u); if(/^https?:$/.test(v.protocol)) pending.links.push(v.toString()); }catch(_){}
+        (textData.match(/https?:\/\/\S+/g)||[]).forEach(u=>{
+          try{ const v=new URL(u); if(/^https?:$/.test(v.protocol)) pending.links.push(v.toString()); }catch(_){}
         });
       }
       refreshPreviews();
     });
 
-    // Enter to send (Shift+Enter for newline)
-    text.addEventListener("keydown", (e)=>{
-      if(e.key==="Enter" && !e.shiftKey){
-        e.preventDefault(); send();
+    // ----- Upload images to Storage -----
+    async function uploadImages(uid, messageId, files){
+      const urls=[];
+      for(const f of files){
+        const path = `hallway_uploads/${uid}/${messageId}/${Date.now()}_${encodeURIComponent(f.name)}`;
+        const r = sref(storage, path);
+        await new Promise((res,rej)=>{
+          const task = uploadBytesResumable(r, f);
+          task.on("state_changed", ()=>{}, rej, async ()=>{ res(); });
+        });
+        const url = await getDownloadURL(r);
+        urls.push(url);
       }
-    });
-    form.addEventListener("submit", (e)=>{ e.preventDefault(); send(); });
-
-    function send(){
-      const content = (text.value||"").trim();
-      if(!content && pending.links.length===0 && pending.images.length===0){
-        // nothing to send
-        return;
-      }
-      const msg = {
-        id: crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"_"+Math.random().toString(36).slice(2)),
-        author: me.name || "You",
-        text: content,
-        links: [...pending.links],
-        images: [...pending.images],
-        time: Date.now()
-      };
-      const items = getAll(); items.push(msg); saveAll(items);
-      // reset
-      text.value=""; pending.links.length=0; pending.images.length=0;
-      refreshPreviews(); render();
+      return urls;
     }
 
-    // Initial render
-    render();
+    // ----- Send post -----
+    form.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const u = auth.currentUser;
+      if(!u){ alert("Not signed in yet. Try again in a second."); return; }
+
+      const textVal = (text.value || "").trim();
+      const links = pending.links.map(String);
+
+      // Create the shell doc first to get an id
+      const shell = await addDoc(COL, {
+        uid: u.uid,
+        author: u.displayName || "Anonymous",
+        text: textVal,
+        links,
+        images: [],
+        createdAt: serverTimestamp()
+      });
+
+      // Upload images (if any)
+      let images = [];
+      if (pending.images.length){
+        images = await uploadImages(u.uid, shell.id, pending.images);
+        // Patch images array
+        await addDoc(collection(db, "hallwayMessages", shell.id, "_patches"), { // lightweight write marker (optional)
+          at: serverTimestamp(), type: "imagesUploaded"
+        }).catch(()=>{});
+        // Update root doc with image URLs
+        await (await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")).updateDoc(
+          doc(db, "hallwayMessages", shell.id), { images }
+        ).catch(()=>{});
+      }
+
+      // reset local inputs
+      text.value=""; pending.links = []; pending.images = []; refreshPreviews();
+
+      // Enforce soft cap (client-side)
+      try{ await enforceCap(); }catch{}
+    });
+
+    // ----- Keep collection size safe -----
+    async function enforceCap(){
+      const countSnap = await getCountFromServer(COL);
+      const total = countSnap.data().count || 0;
+      if (total <= MAX_MESSAGES) return;
+
+      const toDelete = total - MAX_MESSAGES;
+      const qOldest = query(COL, orderBy("createdAt", "asc"), limit(toDelete));
+      const oldSnap = await getDocs(qOldest);
+      const batchDel = (await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")).writeBatch(db);
+      oldSnap.forEach(d => batchDel.delete(d.ref));
+      await batchDel.commit();
+    }
+
+    // Optional TTL cleanup on load (delete messages older than N days)
+    window.addEventListener("load", async ()=>{
+      if (OPTIONAL_TTL_DAYS > 0){
+        const cutoff = new Date(Date.now() - OPTIONAL_TTL_DAYS*24*60*60*1000);
+        const qOld = query(COL, where("createdAt","<", cutoff), orderBy("createdAt","asc"), limit(100));
+        const snap = await getDocs(qOld);
+        if (!snap.empty){
+          const mod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+          const wb = mod.writeBatch(db);
+          snap.forEach(d=> wb.delete(d.ref));
+          await wb.commit();
+        }
+      }
+    });
+  </script>
+
+  <!-- Small helpers that don’t need modules -->
+  <script>
+    // Enter to send (Shift+Enter makes newline)
+    document.addEventListener("keydown", (e)=>{
+      const t = document.getElementById("text");
+      if (!t || document.activeElement !== t) return;
+      if (e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        document.getElementById("sendBtn").click();
+      }
+    });
   </script>
 </body>
 </html>
