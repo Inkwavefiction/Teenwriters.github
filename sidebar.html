@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sidebar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: teal; /* default */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .sidebar ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .theme-picker {
+      margin-top: auto;
+      font-size: 14px;
+    }
+
+    .theme-picker select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 5px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar" class="sidebar">
+    <h2>Team Writers Hub</h2>
+    <ul>
+      <li><a href="main-hallway.html">Main Hallway</a></li>
+      <li><a href="newspaper.html">Newspaper</a></li>
+      <li><a href="info.html">Info</a></li>
+      <li><a href="intro.html">Intro</a></li>
+      <li><a href="feedback.html">Writing Feedback</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="book-club.html">Book Club</a></li>
+      <li><a href="fan-clubs.html">Fan Clubs</a></li>
+    </ul>
+
+    <!-- Theme Picker -->
+    <div class="theme-picker">
+      <label for="theme">Choose Theme:</label>
+      <select id="theme">
+        <option value="teal">Teal</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="purple">Purple</option>
+      </select>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const sidebar = document.getElementById("sidebar");
+      const themeSelect = document.getElementById("theme");
+
+      const themes = {
+        teal: "teal",
+        blue: "rgb(30, 64, 175)",
+        green: "rgb(22, 163, 74)",
+        purple: "rgb(126, 34, 206)"
+      };
+
+      // Load saved theme
+      const savedTheme = localStorage.getItem("theme") || "teal";
+      sidebar.style.background = themes[savedTheme];
+      themeSelect.value = savedTheme;
+
+      // Change theme
+      themeSelect.addEventListener("change", () => {
+        const newTheme = themeSelect.value;
+        sidebar.style.background = themes[newTheme];
+        localStorage.setItem("theme", newTheme);
+      });
+    });
+  </script>
+</body>
+</html>
