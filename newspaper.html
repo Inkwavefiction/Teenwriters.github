@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Newspaper — Team Writers Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;            /* slate-900 */
+      --panel: #0ea5a4;         /* teal-500 */
+      --panel-2: #2563eb;       /* blue-600 */
+      --text: #e5e7eb;          /* gray-200 */
+      --muted: #94a3b8;         /* slate-400 */
+      --accent: #22d3ee;        /* cyan-400 */
+      --danger: #ef4444;        /* red-500 */
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, var(--panel) 0%, var(--panel-2) 100%);
+      color: var(--text);
+      display: flex;
+    }
+
+    /* Layout */
+    #sidebar-container { width: 250px; flex: 0 0 250px; }
+    .content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      max-height: 100vh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .role {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .role .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font-weight: 600;
+    }
+    .role button {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .role button:hover { background: rgba(255,255,255,0.08); }
+
+    /* Editor panel (only for Editors) */
+    .editor-panel {
+      padding: 16px 20px;
+      display: none; /* toggled by JS for editor role */
+      gap: 12px;
+      border-bottom: 1px dashed rgba(255,255,255,0.15);
+      background: rgba(15, 23, 42, 0.25);
+      backdrop-filter: blur(4px);
+    }
+    .editor-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+    }
+    .box {
+      width: 100%;
+      min-height: 120px;
+      border: 2px dashed rgba(255,255,255,0.25);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      padding: 12px;
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 14px;
+    }
+    .btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .btn-primary {
+      background: #ffffff;
+      color: #0f172a;
+    }
+    .btn-primary:hover { filter: brightness(0.95); }
+    .hint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .error {
+      margin-top: 6px;
+      color: #ffe4e6;
+      background: rgba(239, 68, 68, 0.25);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      padding: 8px 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    /* Viewer */
+    .viewer {
+      flex: 1;
+      min-height: 0;
+      padding: 16px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .frame-wrap {
+      flex: 1;
+      min-height: 0;
+      background: rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: none; /* shown once we have a URL */
+    }
+    .placeholder {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      #sidebar-container { display: none; }
+      .role { display: none; }
+      .editor-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main -->
+  <div class="content">
+    <header>
+      <h1>Newspaper</h1>
+      <div class="role">
+        <span>Role:</span>
+        <span id="role-pill" class="pill">Viewer</span>
+        <button id="become-editor" title="Temporarily set role to Editor for this browser">Become Editor</button>
+        <button id="become-viewer" title="Temporarily set role to Viewer for this browser">Become Viewer</button>
+      </div>
+    </header>
+
+    <!-- Editor-Only Upload/Paste Box -->
+    <section id="editor-panel" class="editor-panel">
+      <div class="editor-row">
+        <textarea id="embedInput" class="box" placeholder="Paste your Canva embed code OR Canva link here...
+Example (iframe):
+<iframe loading='lazy' src='https://www.canva.com/design/XYZ/view?embed' allowfullscreen></iframe>
+
+Example (link):
+https://www.canva.com/design/XYZ/view?embed"></textarea>
+        <button id="saveEmbed" class="btn btn-primary">Save & Publish</button>
+      </div>
+      <div class="hint">
+        Tip: In Canva, click <strong>Share → More → Embed</strong>. Copy the <em>embed</em> code or link and paste it here.
+        We’ll extract the URL and show it below.
+      </div>
+      <div id="error" class="error">Invalid input. Please paste a Canva embed link or iframe.</div>
+    </section>
+
+    <!-- Viewer -->
+    <section class="viewer">
+      <div class="frame-wrap">
+        <iframe id="paperFrame" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div id="emptyState" class="placeholder">
+          Nothing published yet. Editors: paste a Canva embed using the box above.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ---- Sidebar loader (shared across pages) ----
+    (function loadSidebar() {
+      const container = document.getElementById("sidebar-container");
+      if (!container) return;
+      fetch("sidebar.html")
+        .then(r => r.text())
+        .then(html => { container.innerHTML = html; })
+        .catch(() => { container.innerHTML = ""; });
+    })();
+
+    // ---- Role handling (demo-only; replace with real auth later) ----
+    const ROLE_KEY = "twh_role";
+    const EMBED_KEY = "twh_newspaper_embed_url";
+
+    const rolePill = document.getElementById("role-pill");
+    const editorPanel = document.getElementById("editor-panel");
+    const becomeEditorBtn = document.getElementById("become-editor");
+    const becomeViewerBtn = document.getElementById("become-viewer");
+
+    function getRole() {
+      return localStorage.getItem(ROLE_KEY) || "viewer";
+    }
+    function setRole(role) {
+      localStorage.setItem(ROLE_KEY, role);
+      applyRole();
+    }
+    function applyRole() {
+      const role = getRole();
+      rolePill.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+      editorPanel.style.display = role === "editor" ? "grid" : "none";
+    }
+    becomeEditorBtn.addEventListener("click", () => setRole("editor"));
+    becomeViewerBtn.addEventListener("click", () => setRole("viewer"));
+    applyRole();
+
+    // ---- Embed handling ----
+    const embedInput = document.getElementById("embedInput");
+    const saveEmbed = document.getElementById("saveEmbed");
+    const errorBox = document.getElementById("error");
+    const iframeEl = document.getElementById("paperFrame");
+    const emptyState = document.getElementById("emptyState");
+
+    function sanitizeUrl(url) {
+      try {
+        const u = new URL(url);
+        if (u.protocol !== "https:" && u.protocol !== "http:") return null;
+        return u.toString();
+      } catch { return null; }
+    }
+
+    function extractEmbedUrl(raw) {
+      if (!raw) return null;
+      // 1) Try to grab src="" from an iframe
+      const m = raw.match(/src\s*=\s*["']([^"']+)["']/i);
+      if (m && m[1]) return sanitizeUrl(m[1]);
+
+      // 2) Otherwise, try to treat it as a URL pasted directly
+      const urlMatch = raw.trim().match(/https?:\/\/\S+/i);
+      if (urlMatch) return sanitizeUrl(urlMatch[0]);
+
+      return null;
+    }
+
+    function renderEmbed(url) {
+      if (url) {
+        iframeEl.src = url;
+        iframeEl.style.display = "block";
+        emptyState.style.display = "none";
+      } else {
+        iframeEl.removeAttribute("src");
+        iframeEl.style.display = "none";
+        emptyState.style.display = "grid";
+      }
+    }
+
+    // Load previously saved embed (if any)
+    renderEmbed(localStorage.getItem(EMBED_KEY));
+
+    saveEmbed.addEventListener("click", () => {
+      errorBox.style.display = "none";
+      const raw = embedInput.value.trim();
+      const url = extractEmbedUrl(raw);
+
+      if (!url) {
+        errorBox.style.display = "block";
+        return;
+      }
+
+      // Optional: Try to enforce Canva host (comment out if you want any iframe)
+      // const host = (new URL(url)).host;
+      // if (!/canva\.com$/i.test(host)) {
+      //   errorBox.textContent = "Please paste a Canva embed/link.";
+      //   errorBox.style.display = "block";
+      //   return;
+      // }
+
+      localStorage.setItem(EMBED_KEY, url);
+      renderEmbed(url);
+      embedInput.value = "";
+    });
+
+    // Support quick demo via URL param ?role=editor
+    (function roleFromQuery() {
+      const params = new URLSearchParams(location.search);
+      const role = params.get("role");
+      if (role === "editor" || role === "viewer") {
+        setRole(role);
+      }
+    })();
+  </script>
+</body>
+</html>
