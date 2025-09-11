@@ -7,13 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --w: 320px;                /* wider */
-      --bg: #0b0c0e;             /* pure sleek black-ish */
-      --bg-elev: #111317;        /* subtle elevation */
-      --text: #e5e7eb;           /* light gray */
+      --w: 320px;                 /* width */
+      --bg: #0b0c0e;              /* near-black */
+      --bg-elev: #101215;         /* subtle elevation */
+      --text: #e5e7eb;            /* light gray */
       --muted: #9ca3af;
-      --border: rgba(255,255,255,0.06);
-      --accent: #22d3ee;         /* default accent (user can change) */
+      --border: rgba(255,255,255,0.07);
+      --accent: #22d3ee;          /* fixed accent (cyan) */
     }
     *{ box-sizing: border-box; }
     html,body{ height:100%; }
@@ -30,10 +30,10 @@
       width: var(--w);
       height: 100vh;
       padding: 24px 22px;
-      border-right: 1px solid var(--border);
       display:flex;
       flex-direction:column;
       background: var(--bg);
+      border-right: 1px solid var(--border);
     }
 
     /* Brand */
@@ -41,24 +41,23 @@
       display:flex;
       align-items:center;
       gap:12px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
     .logo-dot{
       width: 14px; height:14px; border-radius:50%;
       background: var(--accent);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+      box-shadow: 0 0 0 4px rgba(34,211,238,0.18);
     }
     .brand-name{
-      font-size: 28px;           /* bigger */
+      font-size: 28px;
       font-weight: 700;
       letter-spacing:.2px;
     }
 
-    /* Divider */
     .divider{
       height:1px;
       background: var(--border);
-      margin: 10px 0 16px;
+      margin: 10px 0 14px;
     }
 
     /* Nav */
@@ -67,17 +66,18 @@
       display:flex;
       align-items:center;
       gap:12px;
-      padding: 12px 14px;        /* roomy */
-      font-size: 20px;           /* bigger text */
-      font-weight: 500;
+      padding: 12px 14px;
+      font-size: 20px;             /* larger text */
+      font-weight: 600;
       color: var(--text);
       text-decoration:none;
       border: 1px solid transparent;
       border-radius: 12px;
+      background: transparent;
       transition: border-color .15s ease, background .15s ease, transform .04s ease-in-out;
     }
     .nav-link:hover{
-      background: #0f1115;
+      background: var(--bg-elev);
       border-color: var(--border);
     }
     .nav-link:focus-visible{
@@ -85,58 +85,36 @@
       outline-offset: 2px;
     }
     .nav-link.active{
-      background: #11141a;
-      border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-      box-shadow: inset 2px 0 0 0 var(--accent);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 100%);
+      border-color: rgba(34,211,238,0.28);
+      box-shadow: inset 3px 0 0 var(--accent);
     }
 
-    /* Bottom controls */
-    .bottom{
-      margin-top:auto;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      padding-top: 8px;
-    }
+    /* Section labels (optional, kept subtle) */
     .label{
-      font-size: 12px;
+      margin-top: 14px;
+      font-size: 11px;
       color: var(--muted);
       letter-spacing:.4px;
       text-transform: uppercase;
     }
-    .row{
-      display:flex; gap:10px; align-items:center;
-    }
-    .select{
-      flex:1;
-      background: var(--bg-elev);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 14px;
-      appearance: none;
-    }
-    .hint{
-      font-size: 12px; color: var(--muted);
-    }
 
-    /* Optional subtle scroll if content grows */
+    /* Scroll if needed */
     .scroll{
-      overflow: auto;
+      overflow:auto;
       overscroll-behavior: contain;
-      padding-right: 2px; /* room for scrollbar */
+      padding-right: 3px;
     }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
+  <aside class="sidebar" role="navigation" aria-label="Main sidebar">
     <div class="brand">
       <div class="logo-dot" aria-hidden="true"></div>
       <div class="brand-name">Team Writers Hub</div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider" aria-hidden="true"></div>
 
     <div class="scroll">
       <nav>
@@ -150,47 +128,29 @@
         <a class="nav-link" href="book-club.html">Book Club</a>
         <a class="nav-link" href="fan-clubs.html">Fan Clubs</a>
       </nav>
-    </div>
 
-    <div class="bottom">
-      <div class="label">Accent Color</div>
-      <div class="row">
-        <select id="accent" class="select" aria-label="Choose accent color">
-          <option value="#22d3ee">Cyan</option>
-          <option value="#14b8a6">Teal</option>
-          <option value="#60a5fa">Blue</option>
-          <option value="#34d399">Green</option>
-          <option value="#a78bfa">Purple</option>
-          <option value="#f472b6">Pink</option>
-          <option value="#f59e0b">Orange</option>
-        </select>
-      </div>
-      <div class="hint">Base stays black. Accent highlights update per user.</div>
+      <!-- Optional section label example (remove if you want it ultra-minimal)
+      <div class="label">Account</div>
+      <nav>
+        <a class="nav-link" href="settings.html">Settings</a>
+      </nav>
+      -->
     </div>
   </aside>
 
   <script>
+    // Auto-highlight the active link based on the parent page path (works inside iframe too).
     (function(){
-      // Persist accent choice (base remains black)
-      const sel = document.getElementById('accent');
-      const saved = localStorage.getItem('accentColor');
-      if(saved){ document.documentElement.style.setProperty('--accent', saved); sel.value = saved; }
-      sel.addEventListener('change', () => {
-        document.documentElement.style.setProperty('--accent', sel.value);
-        localStorage.setItem('accentColor', sel.value);
-      });
-
-      // Highlight active link based on parent page (works inside iframe or standalone)
       try{
-        const currentPath = (window.parent && window.parent.location && window.parent.location.pathname) 
-          ? window.parent.location.pathname 
+        const currentPath = (window.parent && window.parent.location && window.parent.location.pathname)
+          ? window.parent.location.pathname
           : window.location.pathname;
-        const links = document.querySelectorAll('.nav-link');
-        links.forEach(a => {
-          const aPath = new URL(a.href, window.location.origin).pathname;
-          if(currentPath.endsWith(aPath)) a.classList.add('active');
+
+        document.querySelectorAll('.nav-link').forEach(a => {
+          const aPath = new URL(a.getAttribute('href'), window.location.origin).pathname;
+          if (currentPath.endsWith(aPath)) a.classList.add('active');
         });
-      }catch(e){ /* cross-origin or other issues — ignore */ }
+      }catch(e){ /* cross-origin edge cases: ignore */ }
     })();
   </script>
 </body>
