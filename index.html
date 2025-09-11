@@ -10,6 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: 'Poppins', sans-serif; }
+    html { scroll-behavior: smooth; } /* smooth scrolling */
   </style>
 </head>
 <body class="bg-gray-50">
@@ -17,14 +18,14 @@
   <!-- Navbar -->
   <nav class="bg-white shadow-md fixed w-full top-0 left-0 z-20">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-teal-600">Team Writers Hub</h1>
-      <ul class="hidden md:flex space-x-6">
-        <li><a href="#" class="text-gray-700 hover:text-teal-600">Home</a></li>
-        <li><a href="#info" class="text-gray-700 hover:text-teal-600">About</a></li>
-        <li><a href="#cards" class="text-gray-700 hover:text-teal-600">Resources</a></li>
+      <h1 class="text-3xl font-bold text-teal-600">Team Writers Hub</h1>
+      <ul class="hidden md:flex space-x-10 text-lg font-semibold">
+        <li><a href="#" class="text-gray-800 hover:text-teal-600">Home</a></li>
+        <li><a href="#info" class="text-gray-800 hover:text-teal-600">About</a></li>
+        <li><a href="#cards" class="text-gray-800 hover:text-teal-600">Resources</a></li>
       </ul>
       <!-- Sidebar toggle button -->
-      <button id="menu-btn" class="md:hidden text-gray-700 hover:text-teal-600 focus:outline-none">
+      <button id="menu-btn" class="md:hidden text-2xl text-gray-700 hover:text-teal-600 focus:outline-none">
         ☰
       </button>
     </div>
@@ -34,7 +35,7 @@
   <div id="sidebar" class="fixed top-0 right-0 w-80 h-full bg-teal-600 text-white transform translate-x-full transition-transform duration-300 z-30">
     <div class="p-6">
       <button id="close-btn" class="text-white text-2xl mb-6">✕</button>
-      <ul class="space-y-4">
+      <ul class="space-y-6 text-lg font-semibold">
         <li><a href="sign-in.html" class="block px-4 py-2 rounded-lg hover:bg-teal-500">Sign In</a></li>
         <li><a href="create-account.html" class="block px-4 py-2 rounded-lg hover:bg-teal-500">Create Account</a></li>
       </ul>
