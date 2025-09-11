@@ -2,116 +2,196 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sidebar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
+    :root{
+      --w: 320px;                /* wider */
+      --bg: #0b0c0e;             /* pure sleek black-ish */
+      --bg-elev: #111317;        /* subtle elevation */
+      --text: #e5e7eb;           /* light gray */
+      --muted: #9ca3af;
+      --border: rgba(255,255,255,0.06);
+      --accent: #22d3ee;         /* default accent (user can change) */
+    }
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      width:100%;
+      min-height:100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
     }
 
-    .sidebar {
-      width: 250px;
+    .sidebar{
+      width: var(--w);
       height: 100vh;
-      background: teal; /* default */
-      color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      box-sizing: border-box;
+      padding: 24px 22px;
+      border-right: 1px solid var(--border);
+      display:flex;
+      flex-direction:column;
+      background: var(--bg);
     }
 
-    .sidebar h2 {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 20px;
+    /* Brand */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom: 22px;
+    }
+    .logo-dot{
+      width: 14px; height:14px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+    .brand-name{
+      font-size: 28px;           /* bigger */
+      font-weight: 700;
+      letter-spacing:.2px;
     }
 
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      flex: 1;
+    /* Divider */
+    .divider{
+      height:1px;
+      background: var(--border);
+      margin: 10px 0 16px;
     }
 
-    .sidebar ul li {
-      margin-bottom: 15px;
+    /* Nav */
+    nav{ display:flex; flex-direction:column; gap:10px; margin-top: 6px; }
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding: 12px 14px;        /* roomy */
+      font-size: 20px;           /* bigger text */
+      font-weight: 500;
+      color: var(--text);
+      text-decoration:none;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      transition: border-color .15s ease, background .15s ease, transform .04s ease-in-out;
+    }
+    .nav-link:hover{
+      background: #0f1115;
+      border-color: var(--border);
+    }
+    .nav-link:focus-visible{
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .nav-link.active{
+      background: #11141a;
+      border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+      box-shadow: inset 2px 0 0 0 var(--accent);
     }
 
-    .sidebar ul li a {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
+    /* Bottom controls */
+    .bottom{
+      margin-top:auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding-top: 8px;
     }
-
-    .sidebar ul li a:hover {
-      text-decoration: underline;
+    .label{
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing:.4px;
+      text-transform: uppercase;
     }
-
-    .theme-picker {
-      margin-top: auto;
+    .row{
+      display:flex; gap:10px; align-items:center;
+    }
+    .select{
+      flex:1;
+      background: var(--bg-elev);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
       font-size: 14px;
+      appearance: none;
+    }
+    .hint{
+      font-size: 12px; color: var(--muted);
     }
 
-    .theme-picker select {
-      width: 100%;
-      padding: 6px;
-      margin-top: 5px;
-      border-radius: 5px;
+    /* Optional subtle scroll if content grows */
+    .scroll{
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding-right: 2px; /* room for scrollbar */
     }
   </style>
 </head>
 <body>
-  <div id="sidebar" class="sidebar">
-    <h2>Team Writers Hub</h2>
-    <ul>
-      <li><a href="main-hallway.html">Main Hallway</a></li>
-      <li><a href="newspaper.html">Newspaper</a></li>
-      <li><a href="info.html">Info</a></li>
-      <li><a href="intro.html">Intro</a></li>
-      <li><a href="feedback.html">Writing Feedback</a></li>
-      <li><a href="tools.html">Tools</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="book-club.html">Book Club</a></li>
-      <li><a href="fan-clubs.html">Fan Clubs</a></li>
-    </ul>
-
-    <!-- Theme Picker -->
-    <div class="theme-picker">
-      <label for="theme">Choose Theme:</label>
-      <select id="theme">
-        <option value="teal">Teal</option>
-        <option value="blue">Blue</option>
-        <option value="green">Green</option>
-        <option value="purple">Purple</option>
-      </select>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo-dot" aria-hidden="true"></div>
+      <div class="brand-name">Team Writers Hub</div>
     </div>
-  </div>
+
+    <div class="divider"></div>
+
+    <div class="scroll">
+      <nav>
+        <a class="nav-link" href="main-hallway.html">Main Hallway</a>
+        <a class="nav-link" href="newspaper.html">Newspaper</a>
+        <a class="nav-link" href="info.html">Info</a>
+        <a class="nav-link" href="intro.html">Intro</a>
+        <a class="nav-link" href="feedback.html">Writing Feedback</a>
+        <a class="nav-link" href="tools.html">Tools</a>
+        <a class="nav-link" href="features.html">Features</a>
+        <a class="nav-link" href="book-club.html">Book Club</a>
+        <a class="nav-link" href="fan-clubs.html">Fan Clubs</a>
+      </nav>
+    </div>
+
+    <div class="bottom">
+      <div class="label">Accent Color</div>
+      <div class="row">
+        <select id="accent" class="select" aria-label="Choose accent color">
+          <option value="#22d3ee">Cyan</option>
+          <option value="#14b8a6">Teal</option>
+          <option value="#60a5fa">Blue</option>
+          <option value="#34d399">Green</option>
+          <option value="#a78bfa">Purple</option>
+          <option value="#f472b6">Pink</option>
+          <option value="#f59e0b">Orange</option>
+        </select>
+      </div>
+      <div class="hint">Base stays black. Accent highlights update per user.</div>
+    </div>
+  </aside>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const sidebar = document.getElementById("sidebar");
-      const themeSelect = document.getElementById("theme");
-
-      const themes = {
-        teal: "teal",
-        blue: "rgb(30, 64, 175)",
-        green: "rgb(22, 163, 74)",
-        purple: "rgb(126, 34, 206)"
-      };
-
-      // Load saved theme
-      const savedTheme = localStorage.getItem("theme") || "teal";
-      sidebar.style.background = themes[savedTheme];
-      themeSelect.value = savedTheme;
-
-      // Change theme
-      themeSelect.addEventListener("change", () => {
-        const newTheme = themeSelect.value;
-        sidebar.style.background = themes[newTheme];
-        localStorage.setItem("theme", newTheme);
+    (function(){
+      // Persist accent choice (base remains black)
+      const sel = document.getElementById('accent');
+      const saved = localStorage.getItem('accentColor');
+      if(saved){ document.documentElement.style.setProperty('--accent', saved); sel.value = saved; }
+      sel.addEventListener('change', () => {
+        document.documentElement.style.setProperty('--accent', sel.value);
+        localStorage.setItem('accentColor', sel.value);
       });
-    });
+
+      // Highlight active link based on parent page (works inside iframe or standalone)
+      try{
+        const currentPath = (window.parent && window.parent.location && window.parent.location.pathname) 
+          ? window.parent.location.pathname 
+          : window.location.pathname;
+        const links = document.querySelectorAll('.nav-link');
+        links.forEach(a => {
+          const aPath = new URL(a.href, window.location.origin).pathname;
+          if(currentPath.endsWith(aPath)) a.classList.add('active');
+        });
+      }catch(e){ /* cross-origin or other issues — ignore */ }
+    })();
   </script>
 </body>
 </html>
