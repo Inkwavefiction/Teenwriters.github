@@ -6,31 +6,47 @@
   <title>Team Writers Hub</title>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN for professional styling -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
 </head>
-<body class="bg-gray-50 font-[Poppins]">
+<body class="bg-gray-50">
 
-  <!-- Navigation -->
-  <nav class="bg-white shadow-md fixed w-full top-0 left-0 z-10">
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md fixed w-full top-0 left-0 z-20">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-indigo-600">Team Writers Hub</h1>
-      <ul class="flex space-x-6">
-        <li><a href="#" class="text-gray-700 hover:text-indigo-600">Home</a></li>
-        <li><a href="#info" class="text-gray-700 hover:text-indigo-600">About</a></li>
-        <li><a href="#resources" class="text-gray-700 hover:text-indigo-600">Resources</a></li>
-        <li><a href="#signin" class="text-gray-700 hover:text-indigo-600">Sign In</a></li>
-        <li><a href="#signup" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Create Account</a></li>
+      <h1 class="text-2xl font-bold text-teal-600">Team Writers Hub</h1>
+      <ul class="hidden md:flex space-x-6">
+        <li><a href="#" class="text-gray-700 hover:text-teal-600">Home</a></li>
+        <li><a href="#info" class="text-gray-700 hover:text-teal-600">About</a></li>
+        <li><a href="#resources" class="text-gray-700 hover:text-teal-600">Resources</a></li>
       </ul>
+      <!-- Sidebar toggle button -->
+      <button id="menu-btn" class="md:hidden text-gray-700 hover:text-teal-600 focus:outline-none">
+        ☰
+      </button>
     </div>
   </nav>
 
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-teal-600 text-white transform translate-x-full transition-transform duration-300 z-30">
+    <div class="p-6">
+      <button id="close-btn" class="text-white text-2xl mb-6">✕</button>
+      <ul class="space-y-4">
+        <li><a href="sign-in.html" class="block px-4 py-2 rounded-lg hover:bg-teal-500">Sign In</a></li>
+        <li><a href="create-account.html" class="block px-4 py-2 rounded-lg hover:bg-teal-500">Create Account</a></li>
+      </ul>
+    </div>
+  </div>
+
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white h-screen flex items-center justify-center">
+  <section class="bg-gradient-to-r from-teal-500 to-indigo-600 text-white h-screen flex items-center justify-center">
     <div class="text-center px-6">
       <h2 class="text-5xl font-bold mb-4">Welcome to Team Writers Hub</h2>
       <p class="text-lg mb-6">A creative space for the next generation of storytellers.</p>
-      <a href="#signup" class="px-6 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100">
+      <a href="create-account.html" class="px-6 py-3 bg-white text-teal-600 font-semibold rounded-lg shadow-md hover:bg-gray-100">
         Join Now
       </a>
     </div>
@@ -42,43 +58,28 @@
       <h3 class="text-3xl font-bold text-gray-800 mb-12">Everything You Need in One Place</h3>
       <div class="grid md:grid-cols-3 gap-8">
         <div class="p-6 bg-white rounded-xl shadow-md hover:shadow-lg">
-          <h4 class="text-xl font-semibold mb-3">For New Writers</h4>
+          <h4 class="text-xl font-semibold mb-3 text-teal-600">For New Writers</h4>
           <p class="text-gray-600">Tips, starter guides, and resources to help you begin your writing journey.</p>
         </div>
         <div class="p-6 bg-white rounded-xl shadow-md hover:shadow-lg">
-          <h4 class="text-xl font-semibold mb-3">Community</h4>
+          <h4 class="text-xl font-semibold mb-3 text-teal-600">Community</h4>
           <p class="text-gray-600">Connect with other teen writers, share your work, and get feedback.</p>
         </div>
         <div class="p-6 bg-white rounded-xl shadow-md hover:shadow-lg">
-          <h4 class="text-xl font-semibold mb-3">Events & Challenges</h4>
+          <h4 class="text-xl font-semibold mb-3 text-teal-600">Events & Challenges</h4>
           <p class="text-gray-600">Join contests, prompts, and challenges to sharpen your skills.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Sign In Section -->
-  <section id="signin" class="py-20">
-    <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
-      <h3 class="text-2xl font-bold text-center text-indigo-600 mb-6">Sign In</h3>
-      <form>
-        <input type="email" placeholder="Email" class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400" />
-        <input type="password" placeholder="Password" class="w-full mb-6 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400" />
-        <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700">Sign In</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- Sign Up Section -->
-  <section id="signup" class="py-20 bg-gray-100">
-    <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
-      <h3 class="text-2xl font-bold text-center text-indigo-600 mb-6">Create Account</h3>
-      <form>
-        <input type="text" placeholder="Full Name" class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400" />
-        <input type="email" placeholder="Email" class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400" />
-        <input type="password" placeholder="Password" class="w-full mb-6 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400" />
-        <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700">Create Account</button>
-      </form>
+  <!-- Resources Section -->
+  <section id="resources" class="py-20">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-gray-800 mb-12">Writer Resources</h3>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Coming soon: curated articles, writing prompts, and guides designed just for teen writers.
+      </p>
     </div>
   </section>
 
@@ -86,6 +87,21 @@
   <footer class="bg-gray-900 text-gray-400 py-6 text-center">
     <p>&copy; 2025 Team Writers Hub. Built with 💻 by our community.</p>
   </footer>
+
+  <!-- Sidebar Script -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.remove('translate-x-full');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.add('translate-x-full');
+    });
+  </script>
 
 </body>
 </html>
