@@ -30,23 +30,37 @@
       border: none;
     }
 
-    /* CHAT AREA */
+    /* CHAT CONTAINER */
     #chat-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
+      position: relative;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* HEADER TITLE */
+    #chat-header {
+      height: 60px;
       padding: 20px;
       box-sizing: border-box;
-      position: relative;
+      background-color: #d9ecff;
+      font-size: 20px;
+      font-weight: bold;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      border-bottom: 1px solid #ccc;
     }
 
     #chat-log {
       flex: 1;
       overflow-y: auto;
       background-color: white;
-      border-radius: 8px;
-      padding: 15px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -70,40 +84,40 @@
     }
 
     .chat-bubble {
-      max-width: 70%;
+      max-width: calc(70% - 40px); /* reduced width */
       background-color: #d0e8ff;
-      padding: 12px 16px;
+      padding: 14px 18px;
       border-radius: 20px;
       word-wrap: break-word;
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
       font-size: 15px;
     }
 
-    /* CHAT INPUT FIXED TO CORNER */
+    /* CHAT INPUT FLOATING BOTTOM RIGHT */
     #chat-input {
       position: absolute;
       bottom: 20px;
       right: 20px;
       display: flex;
-      width: 350px;
+      width: 400px;
       background-color: white;
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
     }
 
     #chat-input input {
       flex: 1;
-      padding: 10px;
-      font-size: 15px;
+      padding: 14px;
+      font-size: 16px;
       border: none;
       outline: none;
     }
 
     #chat-input button {
-      padding: 10px 20px;
-      font-size: 15px;
+      padding: 14px 20px;
+      font-size: 16px;
       border: none;
       background-color: #4da6ff;
       color: white;
@@ -124,10 +138,14 @@
   </div>
 
   <div id="chat-container">
-    <div id="chat-log" id="log">
-      <!-- Messages will show here -->
-    </div>
+    
+    <!-- TITLE -->
+    <div id="chat-header">Teen Writers – Group Chat!</div>
+    
+    <!-- CHAT AREA -->
+    <div id="chat-log"></div>
 
+    <!-- INPUT -->
     <div id="chat-input">
       <input type="text" id="message" placeholder="Type a message..." />
       <button onclick="sendMessage()">Send</button>
