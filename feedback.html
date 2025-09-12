@@ -135,11 +135,18 @@
       background-color: #3399ff;
     }
 
-    /* Right Sidebar for posts */
+    /* Right Sidebar for posts + chat */
     .posts-sidebar {
       flex: 2;
       background: #ffffff;
       border-left: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .posted-list {
+      flex: 1;
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -173,6 +180,59 @@
       margin-left: 10px;
     }
 
+    /* Chat Box */
+    .chat-box {
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 200px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .chat-bubble {
+      background: #f0f8ff;
+      padding: 8px 12px;
+      border-radius: 16px;
+      align-self: flex-start;
+      max-width: 80%;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .chat-input button {
+      background-color: #4da6ff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background-color: #3399ff;
+    }
+
     /* Back button */
     .back-btn {
       margin: 20px;
@@ -202,7 +262,7 @@
       <div class="card" onclick="openCategory('school')">📚 Writing For School</div>
     </div>
 
-    <!-- Category pages -->
+    <!-- Category template -->
     <div id="manuscripts" class="category">
       <div class="post-area">
         <button class="back-btn" onclick="goHome()">⬅ Back</button>
@@ -212,7 +272,16 @@
           <button onclick="postItem('manuscripts')">Post</button>
         </div>
       </div>
-      <div class="posts-sidebar" id="manuscripts-list"></div>
+      <div class="posts-sidebar">
+        <div class="posted-list" id="manuscripts-list"></div>
+        <div class="chat-box">
+          <div class="chat-messages" id="manuscripts-chat"></div>
+          <div class="chat-input">
+            <input id="manuscripts-chat-input" type="text" placeholder="Write a message..."/>
+            <button onclick="sendMessage('manuscripts')">Send</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="poems" class="category">
@@ -224,7 +293,16 @@
           <button onclick="postItem('poems')">Post</button>
         </div>
       </div>
-      <div class="posts-sidebar" id="poems-list"></div>
+      <div class="posts-sidebar">
+        <div class="posted-list" id="poems-list"></div>
+        <div class="chat-box">
+          <div class="chat-messages" id="poems-chat"></div>
+          <div class="chat-input">
+            <input id="poems-chat-input" type="text" placeholder="Write a message..."/>
+            <button onclick="sendMessage('poems')">Send</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="school" class="category">
@@ -236,7 +314,16 @@
           <button onclick="postItem('school')">Post</button>
         </div>
       </div>
-      <div class="posts-sidebar" id="school-list"></div>
+      <div class="posts-sidebar">
+        <div class="posted-list" id="school-list"></div>
+        <div class="chat-box">
+          <div class="chat-messages" id="school-chat"></div>
+          <div class="chat-input">
+            <input id="school-chat-input" type="text" placeholder="Write a message..."/>
+            <button onclick="sendMessage('school')">Send</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -278,6 +365,22 @@
       // Clear inputs
       document.getElementById(section + '-text').value = "";
       document.getElementById(section + '-link').value = "";
+    }
+
+    function sendMessage(section) {
+      const input = document.getElementById(section + '-chat-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const chat = document.getElementById(section + '-chat');
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.innerText = msg;
+
+      chat.appendChild(bubble);
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight; // auto-scroll
     }
   </script>
 </body>
