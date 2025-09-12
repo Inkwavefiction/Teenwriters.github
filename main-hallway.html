@@ -11,102 +11,54 @@
 
   <style>
     :root{
-      /* Light Classroom-ish palette */
-      --bg:#f4f8ff;      /* page background */
-      --card:#ffffff;    /* cards & inputs */
-      --tint:#eaf2ff;    /* subtle fills */
-      --line:#d7e2ff;    /* soft borders */
-      --link:#1976d2;    /* blue links */
-      --ink:#0f172a;     /* text */
-      --muted:#64748b;   /* secondary text */
-      --teal:#0aa196;    /* top bar */
-      --shadow:0 10px 26px rgba(2,32,71,.10);
-      --radius:16px;
+      /* Light Classroom palette */
+      --bg:#f4f8ff; --card:#fff; --tint:#eaf2ff; --line:#d7e2ff; --link:#1976d2; --ink:#0f172a; --muted:#64748b;
+      --teal:#0aa196; --shadow:0 10px 26px rgba(2,32,71,.10); --radius:16px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      background:var(--bg);
-      color:var(--ink);
+      margin:0; background:var(--bg); color:var(--ink);
       font-family:"Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      display:flex;
-      flex-direction:column;
-      min-height:100vh;
+      display:flex; flex-direction:column; min-height:100vh;
     }
 
-    /* Top slim bar (replaces giant banner) */
-    .topbar{
-      height:64px;
-      background:var(--teal);
-      color:#fff;
-      display:flex;
-      align-items:center;
-      padding:0 20px;
-      box-shadow:0 4px 16px rgba(0,0,0,.08);
-    }
-    .topbar h1{
-      font-size:22px;
-      font-weight:700;
-      margin:0;
-    }
+    /* Slim top bar */
+    .topbar{height:64px;background:var(--teal);color:#fff;display:flex;align-items:center;padding:0 20px;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+    .topbar h1{font-size:22px;font-weight:700;margin:0}
 
-    /* Page layout: small left column + main column (like screenshot) */
-    .page{
-      flex:1;
-      display:grid;
-      grid-template-columns:280px 1fr;
-      gap:16px;
-      padding:18px;
-      max-width:1200px;
-      width:100%;
-      margin:0 auto;
-    }
-    @media (max-width:900px){
-      .page{grid-template-columns:1fr}
-    }
+    /* Main frame: sidebar + content */
+    .frame{flex:1;display:flex;min-height:0}
+
+    /* Sidebar container (resizes when collapsed) */
+    #sidebar-shell{width:280px;flex:0 0 280px;transition:width .18s ease; border-right:1px solid #0000}
+    #sidebar-shell.collapsed{width:84px;flex:0 0 84px}
+    /* make injected sidebar fill shell */
+    #sidebar-shell > *{height:100%}
+
+    /* Content area */
+    .content{flex:1;min-width:0;padding:18px;display:grid;grid-template-columns:280px 1fr;gap:16px;max-width:1200px;margin:0 auto;width:100%}
+    @media (max-width:1100px){ .content{grid-template-columns:1fr} #sidebar-shell{display:none} }
 
     /* Cards */
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 
-    /* Upcoming card (left) */
-    .upcoming{
-      padding:16px 18px;
-      display:flex;flex-direction:column;gap:6px;
-    }
+    /* Upcoming */
+    .upcoming{padding:16px 18px;display:flex;flex-direction:column;gap:6px}
     .upcoming h3{margin:0 0 8px 0;font-size:18px}
     .upcoming p{margin:0;color:var(--muted)}
     .upcoming a{align-self:flex-start;margin-top:6px;color:var(--link);text-decoration:none;font-weight:600}
 
-    /* Main column inner stack */
+    /* Stack */
     .stack{display:flex;flex-direction:column;gap:16px}
 
-    /* Composer (“Announce something to your class”) */
+    /* Composer */
     .composer{padding:16px 18px}
-    .composer-row{
-      display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center
-    }
-    .avatar{
-      width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
-      background:var(--tint);color:#195d9b;font-weight:800;border:1px solid var(--line)
-    }
-    .announce{
-      height:46px;border:1px solid var(--line);border-radius:999px;background:var(--card);
-      padding:0 16px;font-size:14px;outline:none;width:100%;
-    }
-    .composer-tools{
-      display:flex;gap:8px;margin-top:10px;color:var(--muted)
-    }
-    .tool{
-      width:38px;height:38px;border:1px solid var(--line);border-radius:50%;
-      display:grid;place-items:center;background:var(--tint);cursor:pointer
-    }
+    .composer-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+    .avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--tint);color:#195d9b;font-weight:800;border:1px solid var(--line)}
+    .announce{height:46px;border:1px solid var(--line);border-radius:999px;background:var(--card);padding:0 16px;font-size:14px;outline:none;width:100%}
+    .tools{display:flex;gap:8px;margin-top:10px;color:var(--muted)}
+    .tool{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--tint);cursor:pointer}
     .tool:hover{background:#fff}
     .composer-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
     .btn{height:38px;padding:0 16px;border-radius:12px;border:1px solid var(--line);font-weight:700;cursor:pointer}
@@ -117,11 +69,10 @@
     .previews{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
     .chip{background:#eef6ff;border:1px solid var(--line);padding:6px 8px;border-radius:10px;font-size:12px;display:flex;gap:8px;align-items:center}
     .chip button{border:none;background:transparent;color:#0b305b;cursor:pointer}
-
     .drop{border:2px dashed var(--line);border-radius:12px;padding:10px;text-align:center;color:var(--muted);background:var(--tint);margin-top:8px}
     .drop.dragging{background:#fff;color:#113d6e}
 
-    /* Stream card (posts list inside) */
+    /* Stream */
     .post{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:16px 18px}
     .post + .post{border-top:1px solid var(--line)}
     .meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
@@ -131,10 +82,7 @@
     .body a{color:var(--link);text-decoration:underline;word-break:break-word}
 
     .attachments{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-    .link-card{
-      min-width:260px;max-width:520px;display:flex;align-items:center;gap:10px;
-      padding:10px 12px;border-radius:12px;background:var(--tint);border:1px solid var(--line)
-    }
+    .link-card{min-width:260px;max-width:520px;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--tint);border:1px solid var(--line)}
     .link-card img{width:16px;height:16px;border-radius:4px}
     .thumb{width:220px;max-width:44vw;height:140px;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:var(--tint)}
     .thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -146,67 +94,79 @@
     .send{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:var(--card);cursor:pointer;color:#0b305b}
     .send:hover{background:#f9fbff}
 
-    /* tiny icon helper */
     .micon{font-family:"Material Symbols Rounded";font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
   </style>
 </head>
 <body>
 
-  <!-- Slim teal bar -->
-  <div class="topbar">
-    <h1>Teen writers 2</h1>
+  <div class="topbar"><h1>Teen writers 2</h1></div>
+
+  <div class="frame">
+    <!-- Beautiful, collapsible sidebar -->
+    <aside id="sidebar-shell"></aside>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Left column: Upcoming -->
+      <aside class="card">
+        <div class="upcoming">
+          <h3>Upcoming</h3>
+          <p>Woohoo, no work due soon!</p>
+          <a href="#">View all</a>
+        </div>
+      </aside>
+
+      <!-- Main column -->
+      <main class="stack">
+        <!-- Composer -->
+        <section class="card" id="composerCard">
+          <form id="composer" class="composer" autocomplete="off">
+            <div class="composer-row">
+              <div class="avatar">U</div>
+              <input id="announce" class="announce" placeholder="Announce something to your class" />
+            </div>
+
+            <div class="tools">
+              <span class="tool" id="pickImages" title="Add images"><span class="micon">upload</span></span>
+              <span class="tool" id="addLink"   title="Add link"><span class="micon">link</span></span>
+              <input id="file" type="file" accept="image/*" multiple hidden>
+            </div>
+
+            <div class="previews" id="previews"></div>
+            <div class="drop" id="drop">Drag & drop images or links here</div>
+
+            <div class="composer-actions">
+              <button type="button" class="btn btn-cancel" id="cancelAll">Cancel</button>
+              <button type="submit" class="btn btn-post" id="postBtn">Post</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Stream -->
+        <section class="card" id="streamCard">
+          <div id="stream"></div>
+        </section>
+      </main>
+    </div>
   </div>
 
-  <!-- Page -->
-  <div class="page">
-
-    <!-- Left: Upcoming -->
-    <aside class="card">
-      <div class="upcoming">
-        <h3>Upcoming</h3>
-        <p>Woohoo, no work due soon!</p>
-        <a href="#">View all</a>
-      </div>
-    </aside>
-
-    <!-- Main column -->
-    <main class="stack">
-
-      <!-- Composer -->
-      <section class="card" id="composerCard">
-        <form id="composer" class="composer" autocomplete="off">
-          <div class="composer-row">
-            <div class="avatar">U</div>
-            <input id="announce" class="announce" placeholder="Announce something to your class" />
-          </div>
-
-          <div class="composer-tools">
-            <span class="tool" id="pickImages" title="Add images"><span class="micon">upload</span></span>
-            <span class="tool" id="addLink"   title="Add link"><span class="micon">link</span></span>
-            <input id="file" type="file" accept="image/*" multiple hidden>
-          </div>
-
-          <div class="previews" id="previews"></div>
-          <div class="drop" id="drop">Drag & drop images or links here</div>
-
-          <div class="composer-actions">
-            <button type="button" class="btn btn-cancel" id="cancelAll">Cancel</button>
-            <button type="submit" class="btn btn-post" id="postBtn">Post</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- Stream -->
-      <section class="card" id="streamCard">
-        <div id="stream"></div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- Logic (Firestore-only, images inlined as data URLs) -->
+  <!-- App logic (Firestore only; images stored as data URLs) -->
   <script type="module">
-    // Firebase (CDN modular)
+    /* ---------- Load & sync the sidebar ---------- */
+    const shell = document.getElementById("sidebar-shell");
+    fetch("sidebar.html").then(r=>r.text()).then(html=>{
+      shell.innerHTML = html;
+      applySidebarWidth();
+    });
+    function applySidebarWidth(){
+      const collapsed = localStorage.getItem("twh_sidebar_collapsed")==="1";
+      shell.classList.toggle("collapsed", collapsed);
+    }
+    window.addEventListener("twh-sidebar-toggle", (e)=> {
+      shell.classList.toggle("collapsed", !!e.detail?.collapsed);
+    });
+
+    /* ---------- Firebase (Firestore-only) ---------- */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signInAnonymously, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import {
@@ -214,58 +174,57 @@
       getCountFromServer, limit, getDocs, doc, deleteDoc, writeBatch, updateDoc, increment
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // --- Paste your ROTATED + RESTRICTED config here ---
-    const firebaseConfig = /* YOUR CONFIG OBJECT HERE */;
+    // Paste your ROTATED + RESTRICTED config here:
+    const firebaseConfig = {/* YOUR CONFIG HERE */};
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db   = getFirestore(app);
 
-    // Identity
-    onAuthStateChanged(auth, async (u) => {
-      if (!u) { await signInAnonymously(auth); return; }
+    // Simple identity
+    onAuthStateChanged(auth, async (u)=>{
+      if(!u){ await signInAnonymously(auth); return; }
       const localName = localStorage.getItem("twh_displayName");
-      if (localName && !u.displayName) { try { await updateProfile(u, { displayName: localName }); } catch {} }
-      // set avatar initial
+      if(localName && !u.displayName){ try{ await updateProfile(u, { displayName: localName }); }catch{} }
       document.querySelectorAll(".avatar").forEach(el=>{
         el.textContent = (u.displayName||"U").slice(0,1).toUpperCase();
       });
     });
 
-    // Collections & limits
+    // Firestore collections & limits
     const POSTS = collection(db, "hallwayPosts");
     const MAX_POSTS = 500;
     const MAX_IMAGES_PER_POST = 2;
-    const MAX_DOC_BYTES = 900 * 1024;
+    const MAX_DOC_BYTES = 900*1024;
     const MAX_IMAGE_KB = 200;
 
-    // DOM
-    const stream    = document.getElementById("stream");
-    const form      = document.getElementById("composer");
-    const announce  = document.getElementById("announce");
-    const fileEl    = document.getElementById("file");
-    const previews  = document.getElementById("previews");
-    const drop      = document.getElementById("drop");
-    const addLinkBtn= document.getElementById("addLink");
-    const pickImages= document.getElementById("pickImages");
-    const cancelAll = document.getElementById("cancelAll");
+    // DOM refs
+    const stream=document.getElementById("stream");
+    const form=document.getElementById("composer");
+    const announce=document.getElementById("announce");
+    const fileEl=document.getElementById("file");
+    const previews=document.getElementById("previews");
+    const drop=document.getElementById("drop");
+    const addLinkBtn=document.getElementById("addLink");
+    const pickImages=document.getElementById("pickImages");
+    const cancelAll=document.getElementById("cancelAll");
 
-    // Pending attachments
+    // Pending state
     const pending = { links: [], images: [] }; // images: File[]
 
     // Helpers
-    function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
     function autoLink(s){ const re=/(https?:\/\/[^\s)]+)(?![^<]*>)/g; return escapeHtml(s).replace(re,'<a href="$1" target="_blank" rel="noopener">$1</a>'); }
     function fav(u){ try{ return "https://www.google.com/s2/favicons?domain="+new URL(u).hostname; }catch{ return ""; } }
-    function bytesFromB64(b64){ return Math.floor((b64.length * 3) / 4); }
+    function bytesFromB64(b64){ return Math.floor((b64.length*3)/4); }
 
     async function fileToDataURL(file, maxW=1200, maxKB=MAX_IMAGE_KB){
       const img = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=rej; im.src=e.target.result; }; r.onerror=rej; r.readAsDataURL(file); });
       const scale = Math.min(1, maxW/(img.naturalWidth||maxW));
-      const w = Math.round((img.naturalWidth||maxW)*scale), h = Math.round((img.naturalHeight||maxW)*scale);
+      const w = Math.round((img.naturalWidth||maxW)*scale), h=Math.round((img.naturalHeight||maxW)*scale);
       const cvs=document.createElement("canvas"); cvs.width=w; cvs.height=h;
       const ctx=cvs.getContext("2d"); ctx.drawImage(img,0,0,w,h);
-      let q=0.85, data=cvs.toDataURL("image/jpeg", q), cap=maxKB*1024;
-      while(bytesFromB64((data.split(",")[1])||"")>cap && q>0.45){ q-=0.1; data=cvs.toDataURL("image/jpeg", q); }
+      let q=.85, data=cvs.toDataURL("image/jpeg", q), cap=maxKB*1024;
+      while(bytesFromB64((data.split(",")[1])||"")>cap && q>.45){ q-=.1; data=cvs.toDataURL("image/jpeg", q); }
       return data;
     }
 
@@ -305,17 +264,17 @@
       });
     }
 
-    // Enter to send (single-line input UX)
+    // Enter to send (single-line input)
     announce.addEventListener("keydown", (e)=>{
       if(e.key==="Enter"){ e.preventDefault(); document.getElementById("postBtn").click(); }
     });
 
-    // Post submit
+    // Post
+    const POSTS = collection(db, "hallwayPosts");
     form.addEventListener("submit", async (e)=>{
       e.preventDefault();
       const u = auth.currentUser; if(!u){ alert("Not signed in yet."); return; }
 
-      // compress images
       const files = pending.images.slice(0, MAX_IMAGES_PER_POST);
       const images = [];
       for(const f of files){ images.push(await fileToDataURL(f)); }
@@ -323,22 +282,16 @@
       const textVal = (announce.value||"").trim();
       const links = pending.links.map(String);
 
-      // keep doc under 1MB
       let total = new Blob([textVal]).size;
       for(const d of images){ total += bytesFromB64((d.split(",")[1])||""); }
       while(total > MAX_DOC_BYTES && images.length){
-        const removed = images.pop();
-        total -= bytesFromB64((removed.split(",")[1])||"");
+        const removed = images.pop(); total -= bytesFromB64((removed.split(",")[1])||"");
       }
 
       await addDoc(POSTS, {
-        uid: u.uid,
-        author: u.displayName || "Anonymous",
-        text: textVal,
-        links,
-        images,
-        createdAt: serverTimestamp(),
-        commentsCount: 0
+        uid: u.uid, author: u.displayName || "Anonymous",
+        text: textVal, links, images,
+        createdAt: serverTimestamp(), commentsCount: 0
       });
 
       announce.value=""; pending.links=[]; pending.images=[]; refreshPreviews();
@@ -352,9 +305,7 @@
       const toDelete = total - MAX_POSTS;
       const oldest = query(POSTS, orderBy("createdAt","asc"), limit(toDelete));
       const snap = await getDocs(oldest);
-      const wb = writeBatch(db);
-      snap.forEach(d=> wb.delete(d.ref));
-      await wb.commit();
+      const wb = writeBatch(db); snap.forEach(d=> wb.delete(d.ref)); await wb.commit();
     }
 
     // Stream (newest first)
@@ -365,12 +316,9 @@
         const m = docSnap.data(); const id = docSnap.id;
 
         const post = document.createElement("div"); post.className="post";
-
-        const avatar = document.createElement("div"); avatar.className="avatar";
-        avatar.textContent = (m.author||"U").slice(0,1).toUpperCase();
+        const avatar = document.createElement("div"); avatar.className="avatar"; avatar.textContent=(m.author||"U").slice(0,1).toUpperCase();
 
         const right = document.createElement("div");
-
         const meta = document.createElement("div"); meta.className="meta";
         const ts = m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString() : "sending…";
         meta.innerHTML = `<span class="author">${escapeHtml(m.author||"Unknown")}</span><span>•</span><span>${ts}</span><span class="more">⋯</span>`;
@@ -390,10 +338,8 @@
         });
 
         const footer = document.createElement("div"); footer.className="post-footer";
-
         const summary = document.createElement("div"); summary.className="comments-summary";
         summary.innerHTML = `<span class="micon">groups</span><span>${m.commentsCount||0} class comment${(m.commentsCount||0)===1?"":"s"}</span>`;
-
         const thread = document.createElement("div"); thread.style.display="none"; thread.style.paddingTop="6px";
         summary.addEventListener("click", ()=>{ thread.style.display = thread.style.display==="none" ? "block" : "none"; if(thread.dataset.loaded!=="1"){ loadComments(id, thread); } });
 
@@ -414,7 +360,7 @@
         post.appendChild(avatar); post.appendChild(right);
         stream.appendChild(post);
 
-        // delete (owner only) — click ⋯
+        // Owner-only delete (click ⋯)
         onAuthStateChanged(auth, (u)=>{
           if (!u || u.uid !== m.uid) return;
           const more = meta.querySelector(".more");
@@ -432,8 +378,7 @@
       mount.innerHTML = "";
       snap.forEach(d=>{
         const c = d.data();
-        const row = document.createElement("div");
-        row.style.display="flex"; row.style.alignItems="center"; row.style.gap="8px"; row.style.padding="6px 0";
+        const row = document.createElement("div"); row.style.display="flex"; row.style.alignItems="center"; row.style.gap="8px"; row.style.padding="6px 0";
         const av = document.createElement("div"); av.className="avatar"; av.style.width="32px"; av.style.height="32px"; av.textContent=(c.author||"U").slice(0,1).toUpperCase();
         const bubble = document.createElement("div");
         bubble.style.flex="1"; bubble.style.background= "var(--tint)"; bubble.style.border="1px solid var(--line)";
