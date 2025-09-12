@@ -9,7 +9,7 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #eaf3ff;
+      background: #f1f9ff;
       display: flex;
       height: 100vh;
     }
@@ -25,15 +25,23 @@
     .app {
       flex: 1;
       display: flex;
-      justify-content: center;
-      padding: 0 16px;
+      flex-direction: column;
+    }
+    .topbar {
+      background: #e0f1ff;
+      padding: 20px 32px;
+      font-size: 22px;
+      font-weight: 700;
+      border-bottom: 1px solid #cfe0ff;
+      color: #195d9b;
     }
     .column {
       max-width: 760px;
       width: 100%;
+      margin: auto;
+      padding: 24px 16px;
       display: flex;
       flex-direction: column;
-      padding: 24px 0;
       gap: 16px;
     }
     .card {
@@ -74,12 +82,84 @@
       color: white;
       border-color: #1976d2;
     }
+    .post {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      padding: 16px 18px;
+      border-top: 1px solid #cfe0ff;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: #e3f2fd;
+      border: 1px solid #cfe0ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #195d9b;
+    }
+    .meta {
+      font-size: 12px;
+      color: #64748b;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .author {
+      font-weight: 700;
+      color: #0b305b;
+    }
+    .body {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.6;
+      margin-top: 6px;
+    }
+    .body a {
+      color: #1976d2;
+      text-decoration: underline;
+      word-break: break-word;
+    }
+    .comment-section {
+      margin-top: 10px;
+      border-top: 1px solid #cfe0ff;
+      padding-top: 10px;
+    }
+    .comment-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .comment-input {
+      flex: 1;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid #cfe0ff;
+      padding: 0 16px;
+      font-size: 14px;
+      outline: none;
+    }
+    .comment-btn {
+      padding: 0 16px;
+      height: 38px;
+      border: none;
+      border-radius: 12px;
+      background: #1976d2;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div id="sidebar-container"></div>
 
   <div class="app">
+    <div class="topbar">Teen Writers – Main Group Chat</div>
     <div class="column">
 
       <div class="card">
@@ -91,7 +171,7 @@
         </form>
       </div>
 
-      <!-- No posts yet -->
+      <!-- Posts will appear here -->
 
     </div>
   </div>
