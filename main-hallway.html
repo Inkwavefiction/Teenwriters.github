@@ -74,78 +74,11 @@
       color: white;
       border-color: #1976d2;
     }
-    .post {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 14px;
-      padding: 16px 18px;
-      border-top: 1px solid #cfe0ff;
-    }
-    .avatar {
-      width: 40px;
-      height: 40px;
-      background: #e3f2fd;
-      border: 1px solid #cfe0ff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: #195d9b;
-    }
-    .meta {
-      font-size: 12px;
-      color: #64748b;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .author {
-      font-weight: 700;
-      color: #0b305b;
-    }
-    .body {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      line-height: 1.6;
-      margin-top: 6px;
-    }
-    .comment-section {
-      margin-top: 10px;
-      border-top: 1px solid #cfe0ff;
-      padding-top: 10px;
-    }
-    .comment-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-    }
-    .comment-input {
-      flex: 1;
-      height: 44px;
-      border-radius: 999px;
-      border: 1px solid #cfe0ff;
-      padding: 0 16px;
-      font-size: 14px;
-      outline: none;
-    }
-    .comment-btn {
-      padding: 0 16px;
-      height: 38px;
-      border: none;
-      border-radius: 12px;
-      background: #1976d2;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
-  <div id="sidebar-container">
-    <!-- Sidebar HTML gets loaded here dynamically -->
-  </div>
+  <div id="sidebar-container"></div>
+
   <div class="app">
     <div class="column">
 
@@ -158,29 +91,20 @@
         </form>
       </div>
 
-      <div class="card">
-        <div class="post">
-          <div class="avatar">E</div>
-          <div>
-            <div class="meta">
-              <span class="author">Ellie</span>
-              <span>•</span>
-              <span>6:14 AM</span>
-            </div>
-            <div class="body">
-So instead of a QOTD today I’m doing a writing prompt. Put it in the comments when you’re done with it. No links to docs. Just write right here. You have to have the prompt in it.
-            </div>
-            <div class="comment-section">
-              <div class="comment-bar">
-                <input type="text" class="comment-input" placeholder="Add class comment…">
-                <button type="button" class="comment-btn">Send</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- No posts yet -->
 
     </div>
   </div>
+
+  <script>
+    // Load sidebar.html content dynamically
+    (function() {
+      const container = document.getElementById("sidebar-container");
+      fetch("sidebar.html")
+        .then(response => response.text())
+        .then(html => container.innerHTML = html)
+        .catch(() => console.warn("Failed to load sidebar.html"));
+    })();
+  </script>
 </body>
 </html>
