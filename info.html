@@ -32,6 +32,27 @@
 
     #main {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: relative;
+    }
+
+    #top-bar {
+      height: 60px;
+      padding: 20px;
+      background-color: #d9ecff;
+      font-size: 20px;
+      font-weight: bold;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    #content {
+      flex: 1;
       padding: 20px;
       overflow-y: auto;
       position: relative;
@@ -49,6 +70,7 @@
       width: 40px;
       height: 40px;
       cursor: pointer;
+      z-index: 10;
     }
 
     #user-form {
@@ -122,18 +144,22 @@
   </div>
 
   <div id="main">
-    <button id="add-user-btn" title="Add Info">+</button>
+    <div id="top-bar">Everyone's Info! – Miniature Bio's on all of the members.</div>
 
-    <form id="user-form">
-      <input type="text" id="name" placeholder="Name or Pen Name" required />
-      <input type="text" id="grade" placeholder="Grade (optional)" />
-      <input type="text" id="wips" placeholder="WIPs (optional)" />
-      <input type="email" id="email" placeholder="Email (optional)" />
-      <textarea id="info" placeholder="Additional Info (optional)"></textarea>
-      <button type="submit">Save</button>
-    </form>
+    <div id="content">
+      <button id="add-user-btn" title="Add Info">+</button>
 
-    <div id="user-list"></div>
+      <form id="user-form">
+        <input type="text" id="name" placeholder="Name or Pen Name" required />
+        <input type="text" id="grade" placeholder="Grade (optional)" />
+        <input type="text" id="wips" placeholder="WIPs (optional)" />
+        <input type="email" id="email" placeholder="Email (optional)" />
+        <textarea id="info" placeholder="Additional Info (optional)"></textarea>
+        <button type="submit">Save</button>
+      </form>
+
+      <div id="user-list"></div>
+    </div>
   </div>
 
   <script>
