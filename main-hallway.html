@@ -28,16 +28,14 @@
       flex-direction: column;
       height: 100vh;
     }
-    .topbar {
+    .header {
       background: #e0f1ff;
-      padding: 20px 32px;
-      font-size: 22px;
+      padding: 40px 32px;
+      font-size: 28px;
       font-weight: 700;
       border-bottom: 1px solid #cfe0ff;
       color: #195d9b;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      text-align: left;
     }
     .column {
       max-width: 760px;
@@ -55,18 +53,18 @@
       box-shadow: 0 10px 26px rgba(2, 32, 71, 0.1);
     }
     .composer-wrapper {
-      display: flex;
-      justify-content: flex-end;
+      width: 100%;
     }
     .composer-launcher {
-      padding: 10px 16px;
+      width: 100%;
+      padding: 14px 18px;
       background: #ffffff;
       border: 1px solid #cfe0ff;
-      border-radius: 999px;
-      color: #195d9b;
-      font-weight: 600;
+      border-radius: 16px;
+      color: #64748b;
+      font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
-      font-size: 14px;
       transition: background 0.2s;
     }
     .composer-launcher:hover {
@@ -82,13 +80,13 @@
     }
     .composer textarea {
       width: 100%;
-      min-height: 110px;
+      min-height: 100px;
       resize: vertical;
       background: #ffffff;
       border: 1px solid #cfe0ff;
       border-radius: 12px;
       padding: 12px 14px;
-      font-size: 14px;
+      font-size: 15px;
       outline: none;
     }
     .composer-actions {
@@ -115,7 +113,7 @@
   <div id="sidebar-container"></div>
 
   <div class="app">
-    <div class="topbar">Teen Writers – Main Group Chat</div>
+    <div class="header">Teen Writers – Main Group Chat</div>
     <div class="column">
 
       <div class="composer-wrapper">
@@ -124,14 +122,14 @@
 
       <div class="card composer" id="composerCard">
         <form class="composer" onsubmit="submitPost(event)">
-          <textarea placeholder="Announce something to your class..."></textarea>
+          <textarea placeholder="Write your announcement here..."></textarea>
           <div class="composer-actions">
             <button type="submit" class="btn btn-post">Post</button>
           </div>
         </form>
       </div>
 
-      <!-- Posts will appear here -->
+      <!-- No posts yet -->
 
     </div>
   </div>
@@ -144,7 +142,7 @@
 
     function submitPost(e) {
       e.preventDefault();
-      alert("Posting not yet implemented, but UI is ready!");
+      alert("Post submitted! (Functionality can be wired to backend later)");
     }
 
     // Load sidebar.html content dynamically
