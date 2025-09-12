@@ -1,163 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teen Writers 2 - Stream</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Main Hallway</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #f6fbff; /* pearly light blue */
       display: flex;
+      font-family: Arial, sans-serif;
+      background-color: #e6f2ff; /* Light pearly blue */
+    }
+
+    #sidebar {
+      width: 250px;
       height: 100vh;
+      border-right: 1px solid #ccc;
     }
-    #sidebar-container {
-      width: 260px;
-      background: #ffffff;
-      border-right: 1px solid #cfe0ff;
-      flex-shrink: 0;
-      z-index: 20;
-    }
-    @media (max-width: 900px) {
-      #sidebar-container { display: none; }
-    }
-    .app {
+
+    #chat-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
-      background: #f6fbff;
+      padding: 20px;
     }
-    .header {
-      background: #e0f1ff;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      font-size: 20px;
-      font-weight: 700;
-      border-bottom: 1px solid #cfe0ff;
-      color: #195d9b;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+
+    #chat-log {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: white;
+      padding: 10px;
+      margin-bottom: 10px;
     }
-    .column {
-      max-width: 760px;
-      width: 100%;
-      margin: auto;
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-    }
-    .card {
-      background: #ffffff;
-      border: 1px solid #cfe0ff;
-      border-radius: 16px;
-      box-shadow: 0 10px 26px rgba(2, 32, 71, 0.1);
-    }
-    .composer-launcher {
-      position: absolute;
-      top: -20px;
-      right: 0;
-      padding: 10px 16px;
-      background: #ffffff;
-      border: 1px solid #cfe0ff;
-      border-radius: 999px;
-      color: #195d9b;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.2s;
-    }
-    .composer-launcher:hover {
-      background: #f5faff;
-    }
-    .composer {
-      display: none;
-      flex-direction: column;
-      padding: 16px 18px;
-    }
-    .composer.active {
+
+    #chat-input {
       display: flex;
     }
-    .composer textarea {
-      width: 100%;
-      min-height: 100px;
-      resize: vertical;
-      background: #ffffff;
-      border: 1px solid #cfe0ff;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 15px;
-      outline: none;
+
+    #chat-input input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px 0 0 8px;
+      border: 1px solid #ccc;
     }
-    .composer-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 14px;
-    }
-    .btn {
-      height: 38px;
-      padding: 0 16px;
-      border-radius: 12px;
-      border: 1px solid #cfe0ff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-post {
-      background: #1976d2;
+
+    #chat-input button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #4da6ff;
       color: white;
-      border-color: #1976d2;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+    }
+
+    #chat-input button:hover {
+      background-color: #3399ff;
     }
   </style>
 </head>
 <body>
-  <div id="sidebar-container"></div>
 
-  <div class="app">
-    <div class="header">Teen Writers – Main Group Chat</div>
-    <div class="column">
+  <div id="sidebar">
+    <object type="text/html" data="sidebar.html" width="100%" height="100%"></object>
+  </div>
 
-      <div class="composer-launcher" onclick="toggleComposer()">Post Something!</div>
-
-      <div class="card composer" id="composerCard">
-        <form class="composer" onsubmit="submitPost(event)">
-          <textarea placeholder="Write your announcement here..."></textarea>
-          <div class="composer-actions">
-            <button type="submit" class="btn btn-post">Post</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- No posts yet -->
-
+  <div id="chat-container">
+    <div id="chat-log">
+      <!-- Messages will appear here -->
+    </div>
+    <div id="chat-input">
+      <input type="text" id="message" placeholder="Type a message..."/>
+      <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
   <script>
-    function toggleComposer() {
-      const composerCard = document.getElementById("composerCard");
-      composerCard.classList.toggle("active");
-    }
+    function sendMessage() {
+      const input = document.getElementById('message');
+      const message = input.value.trim();
+      if (message === '') return;
 
-    function submitPost(e) {
-      e.preventDefault();
-      alert("Post submitted! (Hook up to backend later)");
-    }
+      const log = document.getElementById('chat-log');
+      const msgDiv = document.createElement('div');
+      msgDiv.textContent = message;
+      log.appendChild(msgDiv);
 
-    // Load sidebar.html content dynamically
-    (function() {
-      const container = document.getElementById("sidebar-container");
-      fetch("sidebar.html")
-        .then(response => response.text())
-        .then(html => container.innerHTML = html)
-        .catch(() => console.warn("Failed to load sidebar.html"));
-    })();
+      input.value = '';
+      log.scrollTop = log.scrollHeight;
+    }
   </script>
+
 </body>
 </html>
