@@ -10,6 +10,8 @@
       display: flex;
       font-family: Arial, sans-serif;
       background-color: #e6f2ff; /* Light pearly blue */
+      height: 100vh;
+      overflow: hidden;
     }
 
     #sidebar {
@@ -18,12 +20,19 @@
       border-right: 1px solid #ccc;
     }
 
+    #sidebar object {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+
     #chat-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
       padding: 20px;
+      box-sizing: border-box;
     }
 
     #chat-log {
@@ -32,8 +41,21 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       background-color: white;
-      padding: 10px;
+      padding: 15px;
       margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-bubble {
+      max-width: 70%;
+      background-color: #d0e8ff;
+      padding: 10px 15px;
+      border-radius: 18px;
+      align-self: flex-start;
+      word-wrap: break-word;
+      box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
     }
 
     #chat-input {
@@ -66,12 +88,12 @@
 <body>
 
   <div id="sidebar">
-    <object type="text/html" data="sidebar.html" width="100%" height="100%"></object>
+    <object type="text/html" data="sidebar.html"></object>
   </div>
 
   <div id="chat-container">
     <div id="chat-log">
-      <!-- Messages will appear here -->
+      <!-- Chat bubbles go here -->
     </div>
     <div id="chat-input">
       <input type="text" id="message" placeholder="Type a message..."/>
@@ -86,9 +108,10 @@
       if (message === '') return;
 
       const log = document.getElementById('chat-log');
-      const msgDiv = document.createElement('div');
-      msgDiv.textContent = message;
-      log.appendChild(msgDiv);
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.textContent = message;
+      log.appendChild(bubble);
 
       input.value = '';
       log.scrollTop = log.scrollHeight;
