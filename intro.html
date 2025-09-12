@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Intro Slideshow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      font-family: 'Quicksand', sans-serif;
+      background-color: #e6f2ff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #sidebar {
+      width: 320px;
+      height: 100vh;
+      flex-shrink: 0;
+      border-right: 1px solid #ccc;
+      overflow: hidden;
+    }
+
+    #sidebar object {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: relative;
+    }
+
+    #top-bar {
+      height: 60px;
+      padding: 20px;
+      background-color: #d9ecff;
+      font-size: 20px;
+      font-weight: bold;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    #slideshow {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      max-width: 700px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .controls {
+      margin-top: 20px;
+    }
+
+    .controls button {
+      background-color: #4da6ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background-color: #3399ff;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <object type="text/html" data="sidebar.html"></object>
+  </div>
+
+  <div id="main">
+    <div id="top-bar">Wecome Guide! – A slideshow to everything you need.</div>
+
+    <div id="slideshow">
+      <div class="slide active">
+        <h2>Welcome to Teen Writers!</h2>
+        <p>We’re a group of teens here to support each other on our writing journey, whether you’re 11 or 19. You belong here!:contentReference[oaicite:1]{index=1}</p>
+      </div>
+      <div class="slide">
+        <h2>Our Community</h2>
+        <p>Join our Google Classrooms: Main GC, Book Club, Talent GC, Writer Com a Con, Spam GC. Each one has its own purpose!:contentReference[oaicite:2]{index=2}</p>
+      </div>
+      <div class="slide">
+        <h2>Daily Newsletter</h2>
+        <p>Every day at 10am EST, check the stream for competitions, challenges, and important announcements. Don’t miss it!:contentReference[oaicite:3]{index=3}</p>
+      </div>
+      <div class="slide">
+        <h2>Writing Prompts</h2>
+        <p>A new prompt is posted every 3 hours—perfect for sparking creativity. Reply with your document and maybe get spotlighted!:contentReference[oaicite:4]{index=4}</p>
+      </div>
+      <div class="slide">
+        <h2>Meet the Team</h2>
+        <p>From Hazel Bloom (CEO/Chairwoman) to Savannah, Rahma, Divine, Khadija, and many others, we’re here to guide you.:contentReference[oaicite:5]{index=5}</p>
+      </div>
+      <div class="controls">
+        <button onclick="prevSlide()">⬅ Prev</button>
+        <button onclick="nextSlide()">Next ➡</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) slide.classList.add('active');
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+  </script>
+</body>
+</html>
