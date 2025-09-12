@@ -15,7 +15,7 @@
       overflow: hidden;
     }
 
-    /* Sidebar */
+    /* Left Sidebar */
     #sidebar {
       width: 320px;
       height: 100vh;
@@ -31,7 +31,7 @@
       border: none;
     }
 
-    /* Main layout */
+    /* Main Layout */
     #main {
       flex: 1;
       display: flex;
@@ -54,17 +54,18 @@
       border-bottom: 1px solid #ccc;
     }
 
-    /* Cards for sections */
+    /* Cards for categories */
     .cards {
       display: flex;
       gap: 20px;
       justify-content: center;
-      margin: 30px;
+      align-items: center;
+      flex: 1;
     }
 
     .card {
       background: #ffffff;
-      padding: 20px;
+      padding: 30px;
       border-radius: 16px;
       width: 250px;
       text-align: center;
@@ -81,16 +82,23 @@
       box-shadow: 0 8px 18px rgba(0,0,0,0.15);
     }
 
-    /* Section content */
-    .section {
+    /* Category View */
+    .category {
       display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
+      flex: 1;
+      flex-direction: row;
     }
 
-    .active {
+    .category.active {
       display: flex;
+    }
+
+    .post-area {
+      flex: 3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
     }
 
     .post-box {
@@ -98,9 +106,8 @@
       padding: 20px;
       border-radius: 16px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 80%;
+      width: 100%;
       max-width: 600px;
-      margin-bottom: 20px;
     }
 
     .post-box input, .post-box textarea {
@@ -128,13 +135,16 @@
       background-color: #3399ff;
     }
 
-    /* Posted items */
-    .posted-list {
+    /* Right Sidebar for posts */
+    .posts-sidebar {
+      flex: 2;
+      background: #ffffff;
+      border-left: 1px solid #ccc;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      width: 80%;
-      max-width: 600px;
+      overflow-y: auto;
     }
 
     .bubble {
@@ -151,6 +161,7 @@
       color: #003366;
       text-decoration: none;
       font-weight: bold;
+      flex: 1;
     }
 
     .bubble button {
@@ -160,6 +171,19 @@
       cursor: pointer;
       color: #cc0000;
       margin-left: 10px;
+    }
+
+    /* Back button */
+    .back-btn {
+      margin: 20px;
+      background: #4da6ff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      align-self: flex-start;
     }
   </style>
 </head>
@@ -171,46 +195,61 @@
   <div id="main">
     <div id="top-bar">Feedback – Share your writing & get responses!</div>
 
-    <!-- Cards -->
-    <div class="cards">
-      <div class="card" onclick="showSection('manuscripts')">📖 Manuscripts</div>
-      <div class="card" onclick="showSection('poems')">✍️ Poems & Short Stories</div>
-      <div class="card" onclick="showSection('school')">📚 Writing For School</div>
+    <!-- Home view with cards -->
+    <div class="cards" id="home">
+      <div class="card" onclick="openCategory('manuscripts')">📖 Manuscripts</div>
+      <div class="card" onclick="openCategory('poems')">✍️ Poems & Short Stories</div>
+      <div class="card" onclick="openCategory('school')">📚 Writing For School</div>
     </div>
 
-    <!-- Sections -->
-    <div id="manuscripts" class="section">
-      <div class="post-box">
-        <textarea id="manuscripts-text" rows="3" placeholder="Add notes about your writing..."></textarea>
-        <input id="manuscripts-link" type="url" placeholder="Paste your link here..."/>
-        <button onclick="postItem('manuscripts')">Post</button>
+    <!-- Category pages -->
+    <div id="manuscripts" class="category">
+      <div class="post-area">
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
+        <div class="post-box">
+          <textarea id="manuscripts-text" rows="3" placeholder="Add notes about your writing..."></textarea>
+          <input id="manuscripts-link" type="url" placeholder="Paste your link here..."/>
+          <button onclick="postItem('manuscripts')">Post</button>
+        </div>
       </div>
-      <div class="posted-list" id="manuscripts-list"></div>
+      <div class="posts-sidebar" id="manuscripts-list"></div>
     </div>
 
-    <div id="poems" class="section">
-      <div class="post-box">
-        <textarea id="poems-text" rows="3" placeholder="Add notes about your writing..."></textarea>
-        <input id="poems-link" type="url" placeholder="Paste your link here..."/>
-        <button onclick="postItem('poems')">Post</button>
+    <div id="poems" class="category">
+      <div class="post-area">
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
+        <div class="post-box">
+          <textarea id="poems-text" rows="3" placeholder="Add notes about your writing..."></textarea>
+          <input id="poems-link" type="url" placeholder="Paste your link here..."/>
+          <button onclick="postItem('poems')">Post</button>
+        </div>
       </div>
-      <div class="posted-list" id="poems-list"></div>
+      <div class="posts-sidebar" id="poems-list"></div>
     </div>
 
-    <div id="school" class="section">
-      <div class="post-box">
-        <textarea id="school-text" rows="3" placeholder="Add notes about your writing..."></textarea>
-        <input id="school-link" type="url" placeholder="Paste your link here..."/>
-        <button onclick="postItem('school')">Post</button>
+    <div id="school" class="category">
+      <div class="post-area">
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
+        <div class="post-box">
+          <textarea id="school-text" rows="3" placeholder="Add notes about your writing..."></textarea>
+          <input id="school-link" type="url" placeholder="Paste your link here..."/>
+          <button onclick="postItem('school')">Post</button>
+        </div>
       </div>
-      <div class="posted-list" id="school-list"></div>
+      <div class="posts-sidebar" id="school-list"></div>
     </div>
   </div>
 
   <script>
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(sectionId).classList.add('active');
+    function openCategory(id) {
+      document.getElementById('home').style.display = 'none';
+      document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goHome() {
+      document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+      document.getElementById('home').style.display = 'flex';
     }
 
     function postItem(section) {
