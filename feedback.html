@@ -4,24 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Feedback</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       display: flex;
       font-family: 'Quicksand', sans-serif;
-      background-color: #e6f2ff;
+      background: linear-gradient(135deg, #f0f9ff, #e6f2ff, #f9f9ff);
       height: 100vh;
       overflow: hidden;
     }
 
-    /* Left Sidebar */
+    /* Sidebar */
     #sidebar {
       width: 320px;
       height: 100vh;
       flex-shrink: 0;
       border-right: 1px solid #ccc;
       overflow: hidden;
+      background: #ffffffaa;
+      backdrop-filter: blur(6px);
     }
 
     #sidebar object {
@@ -31,58 +33,58 @@
       border: none;
     }
 
-    /* Main Layout */
+    /* Main layout */
     #main {
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
       position: relative;
-      background: #f9fbff;
     }
 
     #top-bar {
-      height: 60px;
+      height: 70px;
       padding: 20px;
-      background-color: #d9ecff;
-      font-size: 20px;
-      font-weight: bold;
+      background: linear-gradient(90deg, #cbe7ff, #d9ecff);
+      font-size: 24px;
+      font-family: 'Playfair Display', serif;
       color: #003366;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 2px solid #aaccee;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    /* Cards for categories */
+    /* Home cards */
     .cards {
       display: flex;
-      gap: 20px;
+      gap: 40px;
       justify-content: center;
       align-items: center;
       flex: 1;
     }
 
     .card {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 16px;
-      width: 250px;
+      background: linear-gradient(145deg, #ffffff, #f0f8ff);
+      padding: 40px;
+      border-radius: 24px;
+      width: 260px;
       text-align: center;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
       color: #003366;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+      transform: translateY(-8px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15);
     }
 
-    /* Category View */
+    /* Category view */
     .category {
       display: none;
       flex: 1;
@@ -98,44 +100,43 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 30px;
+      padding: 40px;
     }
 
     .post-box {
       background: #fff;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
       width: 100%;
       max-width: 600px;
     }
 
-    .post-box input, .post-box textarea {
+    .post-box input {
       width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 12px;
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 14px;
       border: 1px solid #ccc;
       font-family: 'Quicksand', sans-serif;
-      resize: none;
     }
 
     .post-box button {
-      background-color: #4da6ff;
+      background: linear-gradient(90deg, #4da6ff, #3399ff);
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 12px;
+      padding: 12px 24px;
+      border-radius: 14px;
       font-size: 16px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: 0.2s;
     }
 
     .post-box button:hover {
-      background-color: #3399ff;
+      background: linear-gradient(90deg, #3399ff, #1a85ff);
     }
 
-    /* Right Sidebar with tabs */
+    /* Right panel */
     .posts-sidebar {
       flex: 2;
       background: #ffffff;
@@ -153,10 +154,12 @@
     .tab {
       flex: 1;
       text-align: center;
-      padding: 10px;
+      padding: 12px;
       cursor: pointer;
       font-weight: bold;
       background: #f0f8ff;
+      border-radius: 12px 12px 0 0;
+      transition: 0.2s;
     }
 
     .tab.active {
@@ -168,7 +171,7 @@
       flex: 1;
       display: none;
       flex-direction: column;
-      padding: 15px;
+      padding: 20px;
       overflow-y: auto;
     }
 
@@ -176,21 +179,27 @@
       display: flex;
     }
 
+    /* Bubbles for links */
     .bubble {
       background: #d9ecff;
-      padding: 10px 15px;
-      border-radius: 16px;
+      padding: 14px 18px;
+      border-radius: 18px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .bubble:hover {
+      transform: scale(1.02);
     }
 
     .bubble a {
       color: #003366;
       text-decoration: none;
       font-weight: bold;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .bubble small {
@@ -208,23 +217,29 @@
       margin-top: 5px;
     }
 
-    /* Chat Box */
+    /* Chat */
     .chat-messages {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 8px;
       overflow-y: auto;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .chat-bubble {
       background: #f0f8ff;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border-radius: 16px;
-      align-self: flex-start;
       max-width: 80%;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .chat-bubble small {
+      display: block;
+      font-size: 11px;
+      color: #777;
+      margin-top: 4px;
     }
 
     .chat-input {
@@ -232,31 +247,30 @@
       gap: 10px;
     }
 
-    .chat-input input {
-      flex: 1;
-      padding: 8px;
+    .chat-input select, .chat-input input {
+      padding: 10px;
       border-radius: 12px;
       border: 1px solid #ccc;
       font-family: 'Quicksand', sans-serif;
     }
 
-    .chat-input button {
-      background-color: #4da6ff;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 12px;
-      cursor: pointer;
+    .chat-input input {
+      flex: 1;
     }
 
-    .chat-input button:hover {
-      background-color: #3399ff;
+    .chat-input button {
+      background: linear-gradient(90deg, #4da6ff, #3399ff);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
     /* Back button */
     .back-btn {
       margin: 20px;
-      background: #4da6ff;
+      background: linear-gradient(90deg, #4da6ff, #3399ff);
       color: white;
       padding: 10px 20px;
       border: none;
@@ -264,6 +278,7 @@
       font-size: 14px;
       cursor: pointer;
       align-self: flex-start;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -275,19 +290,19 @@
   <div id="main">
     <div id="top-bar">Feedback – Share your writing & get responses!</div>
 
-    <!-- Home view -->
+    <!-- Home cards -->
     <div class="cards" id="home">
       <div class="card" onclick="openCategory('manuscripts')">📖 Manuscripts</div>
       <div class="card" onclick="openCategory('poems')">✍️ Poems & Short Stories</div>
       <div class="card" onclick="openCategory('school')">📚 Writing For School</div>
     </div>
 
-    <!-- Category Example -->
+    <!-- Categories -->
     <div id="manuscripts" class="category">
       <div class="post-area">
         <button class="back-btn" onclick="goHome()">⬅ Back</button>
         <div class="post-box">
-          <input id="manuscripts-title" type="text" placeholder="Enter manuscript name/title..."/>
+          <input id="manuscripts-title" type="text" placeholder="Enter title..."/>
           <input id="manuscripts-link" type="url" placeholder="Paste your link here..."/>
           <button onclick="postItem('manuscripts')">Post</button>
         </div>
@@ -301,8 +316,61 @@
         <div id="manuscripts-chat" class="tab-content">
           <div class="chat-messages" id="manuscripts-chat-messages"></div>
           <div class="chat-input">
+            <select id="manuscripts-related"><option value="">General chat</option></select>
             <input id="manuscripts-chat-input" type="text" placeholder="Write a message..."/>
             <button onclick="sendMessage('manuscripts')">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="poems" class="category">
+      <div class="post-area">
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
+        <div class="post-box">
+          <input id="poems-title" type="text" placeholder="Enter title..."/>
+          <input id="poems-link" type="url" placeholder="Paste your link here..."/>
+          <button onclick="postItem('poems')">Post</button>
+        </div>
+      </div>
+      <div class="posts-sidebar">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('poems','list')">Poems</div>
+          <div class="tab" onclick="switchTab('poems','chat')">Chat</div>
+        </div>
+        <div id="poems-list" class="tab-content active"></div>
+        <div id="poems-chat" class="tab-content">
+          <div class="chat-messages" id="poems-chat-messages"></div>
+          <div class="chat-input">
+            <select id="poems-related"><option value="">General chat</option></select>
+            <input id="poems-chat-input" type="text" placeholder="Write a message..."/>
+            <button onclick="sendMessage('poems')">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="school" class="category">
+      <div class="post-area">
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
+        <div class="post-box">
+          <input id="school-title" type="text" placeholder="Enter title..."/>
+          <input id="school-link" type="url" placeholder="Paste your link here..."/>
+          <button onclick="postItem('school')">Post</button>
+        </div>
+      </div>
+      <div class="posts-sidebar">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('school','list')">School</div>
+          <div class="tab" onclick="switchTab('school','chat')">Chat</div>
+        </div>
+        <div id="school-list" class="tab-content active"></div>
+        <div id="school-chat" class="tab-content">
+          <div class="chat-messages" id="school-chat-messages"></div>
+          <div class="chat-input">
+            <select id="school-related"><option value="">General chat</option></select>
+            <input id="school-chat-input" type="text" placeholder="Write a message..."/>
+            <button onclick="sendMessage('school')">Send</button>
           </div>
         </div>
       </div>
@@ -324,10 +392,8 @@
     function switchTab(section, tab) {
       const tabs = document.querySelectorAll(`#${section} .tab`);
       const contents = document.querySelectorAll(`#${section} .tab-content`);
-
       tabs.forEach(t => t.classList.remove('active'));
       contents.forEach(c => c.classList.remove('active'));
-
       document.querySelector(`#${section} .tab[onclick*="${tab}"]`).classList.add('active');
       document.getElementById(section + '-' + tab).classList.add('active');
     }
@@ -338,7 +404,6 @@
       if (!link) return;
 
       const list = document.getElementById(section + '-list');
-
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
 
@@ -352,12 +417,25 @@
 
       const delBtn = document.createElement('button');
       delBtn.innerHTML = "🗑";
-      delBtn.onclick = () => bubble.remove();
+      delBtn.onclick = () => {
+        bubble.remove();
+        const select = document.getElementById(section + '-related');
+        [...select.options].forEach(opt => {
+          if (opt.value === (title || link)) opt.remove();
+        });
+      };
 
       bubble.appendChild(anchor);
       bubble.appendChild(small);
       bubble.appendChild(delBtn);
       list.appendChild(bubble);
+
+      // Add to chat dropdown
+      const select = document.getElementById(section + '-related');
+      const opt = document.createElement('option');
+      opt.value = title || link;
+      opt.innerText = title || link;
+      select.appendChild(opt);
 
       // Clear inputs
       document.getElementById(section + '-title').value = "";
@@ -366,15 +444,14 @@
 
     function sendMessage(section) {
       const input = document.getElementById(section + '-chat-input');
+      const related = document.getElementById(section + '-related').value;
       const msg = input.value.trim();
       if (!msg) return;
 
       const chat = document.getElementById(section + '-chat-messages');
-
       const bubble = document.createElement('div');
       bubble.className = 'chat-bubble';
-      bubble.innerText = msg;
-
+      bubble.innerHTML = msg + (related ? `<small>(related to: ${related})</small>` : `<small>(general chat)</small>`);
       chat.appendChild(bubble);
       input.value = "";
       chat.scrollTop = chat.scrollHeight;
