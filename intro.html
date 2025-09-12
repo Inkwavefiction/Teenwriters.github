@@ -59,12 +59,12 @@
       background: #f9fbff;
     }
 
-    #slideshow object {
+    #slideshow iframe {
       width: 90%;
       height: 90%;
-      border: none;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: none;
     }
   </style>
 </head>
@@ -74,15 +74,13 @@
   </div>
 
   <div id="main">
-    <div id="top-bar">Welcome Guide! – A slideshow to everything you need.</div>
+    <div id="top-bar">Intro! – A slideshow to everything you need.</div>
 
     <div id="slideshow">
-      <object data="Teen Writer Community - Welcome Guide.pdf" type="application/pdf">
-        <p>
-          Your browser doesn’t support embedded PDFs. 
-          <a href="Teen Writer Community - Welcome Guide.pdf">Download the PDF</a>.
-        </p>
-      </object>
+      <iframe 
+        src="https://docs.google.com/presentation/d/e/1pLeU59VIEQrJxZwDuHPEkuGEHIKyLAUl/embed?start=false&loop=false&delayms=3000" 
+        allowfullscreen="true">
+      </iframe>
     </div>
   </div>
 </body>
