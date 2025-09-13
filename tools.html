@@ -17,24 +17,25 @@
       --border: #e0e0e0;
       --container-bg: #ffffff;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Poppins', sans-serif;
       background-color: var(--bg);
       color: var(--text);
       display: flex;
+      height: 100vh;
     }
 
+    /* Fixed 320px sidebar */
     #sidebar {
       width: 320px;
-      height: 100vh;
-      flex-shrink: 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
       border-right: 1px solid #ccc;
+      background: #111; /* fallback bg */
       overflow: hidden;
+      z-index: 10;
     }
-
     #sidebar object {
       width: 100%;
       height: 100%;
@@ -46,6 +47,7 @@
       margin-left: 320px;
       padding: 2.5rem;
       flex: 1;
+      overflow-y: auto;
     }
 
     .header {
@@ -56,17 +58,12 @@
       border-radius: 6px;
       margin-bottom: 30px;
     }
-
     .header h1 {
       font-size: 2.5rem;
       margin: 0;
       font-family: 'Playfair Display', serif;
     }
-
-    .header p {
-      font-size: 1.2rem;
-      margin-top: 10px;
-    }
+    .header p { font-size: 1.2rem; margin-top: 10px; }
 
     .container {
       background: var(--container-bg);
@@ -75,13 +72,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 25px;
-    }
-
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 2px solid var(--border); margin-bottom: 25px; }
     .tab-link {
       padding: 12px 24px;
       background: #e9edf1;
@@ -90,16 +81,11 @@
       border-top-right-radius: 6px;
       font-size: 16px;
       font-weight: 500;
-      position: relative;
       text-decoration: none;
       color: inherit;
       transition: background 0.3s, box-shadow 0.3s;
     }
-
-    .tab-link:hover {
-      background: #dce3ea;
-    }
-
+    .tab-link:hover { background: #dce3ea; }
     .tab-link.active {
       background: var(--container-bg);
       border-bottom: 3px solid var(--accent);
@@ -116,10 +102,7 @@
       cursor: pointer;
       margin-bottom: 20px;
     }
-
-    .btn:hover {
-      background: #7aa7d1;
-    }
+    .btn:hover { background: #7aa7d1; }
 
     .template-card {
       border: 1px solid var(--border);
@@ -130,40 +113,21 @@
       transition: background 0.3s, box-shadow 0.3s;
       position: relative;
     }
-
-    .template-card:hover {
-      background: #f0f4f8;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    }
-
-    .template-card pre {
-      white-space: pre-wrap;
-      font-family: monospace;
-      font-size: 0.9rem;
-      color: #333;
-      margin-top: 1rem;
-    }
+    .template-card:hover { background: #f0f4f8; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+    .template-card pre { white-space: pre-wrap; font-family: monospace; font-size: 0.9rem; color: #333; margin-top: 1rem; }
 
     .delete-btn {
       position: absolute;
-      left: 10px;
-      top: 18px;
+      left: 10px; top: 18px;
       background: transparent;
       border: none;
       font-size: 1rem;
       color: #999;
       cursor: pointer;
     }
+    .delete-btn:hover { color: red; }
 
-    .delete-btn:hover {
-      color: red;
-    }
-
-    .success-msg {
-      margin-bottom: 20px;
-      font-weight: 600;
-      color: green;
-    }
+    .success-msg { margin-bottom: 20px; font-weight: 600; color: green; }
   </style>
 </head>
 <body>
@@ -172,7 +136,7 @@
     <object type="text/html" data="sidebar.html"></object>
   </div>
 
-  <!-- Main Content -->
+  <!-- Main -->
   <div class="main">
     <div class="header">
       <h1>Team Writers – Story Templates</h1>
@@ -209,7 +173,6 @@
       messagingSenderId: "1084811926133",
       appId: "1:1084811926133:web:auto-generated"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const auth = firebase.auth();
@@ -217,12 +180,7 @@
     function loadUserTemplates(user) {
       const container = document.getElementById('myTemplatesContainer');
       container.innerHTML = '';
-
-      db.collection('users')
-        .doc(user.uid)
-        .collection('templates')
-        .orderBy('createdAt', 'desc')
-        .get()
+      db.collection('users').doc(user.uid).collection('templates').orderBy('createdAt','desc').get()
         .then(snapshot => {
           if (snapshot.empty) {
             container.innerHTML = '<p>No templates saved yet.</p>';
@@ -235,8 +193,7 @@
                 <button class="delete-btn" onclick="deleteTemplate('${doc.id}')">🗑</button>
                 <h3 style="padding-left: 28px;">${data.title}</h3>
                 <p>Type: ${data.type || 'Custom'}</p>
-                <pre>${data.content}</pre>
-              `;
+                <pre>${data.content}</pre>`;
               container.appendChild(div);
             });
           }
@@ -250,30 +207,15 @@
     function deleteTemplate(templateId) {
       const user = firebase.auth().currentUser;
       if (!user) return alert("You must be logged in.");
-
       if (!confirm("Delete this template?")) return;
-
-      db.collection("users")
-        .doc(user.uid)
-        .collection("templates")
-        .doc(templateId)
-        .delete()
-        .then(() => {
-          alert("Deleted.");
-          loadUserTemplates(user); // reload templates
-        })
-        .catch(err => {
-          console.error("Error deleting template:", err);
-          alert("Failed to delete.");
-        });
+      db.collection("users").doc(user.uid).collection("templates").doc(templateId).delete()
+        .then(() => { alert("Deleted."); loadUserTemplates(user); })
+        .catch(err => { console.error("Error deleting template:", err); alert("Failed to delete."); });
     }
 
     auth.onAuthStateChanged(user => {
-      if (user) {
-        loadUserTemplates(user);
-      } else {
-        document.getElementById("myTemplatesContainer").innerHTML = "<p>Please log in to view your templates.</p>";
-      }
+      if (user) { loadUserTemplates(user); }
+      else { document.getElementById("myTemplatesContainer").innerHTML = "<p>Please log in to view your templates.</p>"; }
     });
 
     if (window.location.search.includes('saved=true')) {
