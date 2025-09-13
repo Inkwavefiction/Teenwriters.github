@@ -23,15 +23,20 @@
       background-color: var(--bg);
       color: var(--text);
       display: flex;
+      height: 100vh;
     }
 
-    /* Correct 320px embedded sidebar */
+    /* Correct 320px embedded sidebar (fixed, uses sidebar.html) */
     #sidebar {
       width: 320px;
-      height: 100vh;
-      flex-shrink: 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
       border-right: 1px solid #ccc;
       overflow: hidden;
+      background: #111; /* fallback background */
+      z-index: 10;
     }
     #sidebar object {
       width: 100%;
@@ -40,11 +45,13 @@
       border: none;
     }
 
-    /* Main content */
+    /* Main content sits flush to the right of the fixed sidebar */
     .main {
-      margin-left: 320px; /* matches embedded sidebar */
+      margin-left: 320px; /* matches sidebar width */
       padding: 2.5rem;
       flex: 1;
+      overflow-y: auto;
+      min-width: 0;
     }
 
     .header {
@@ -176,7 +183,7 @@
   </div>
 
   <script>
-    // Full template data (as in your version)
+    // Full template data
     const preMadeTemplates = [
       {
         id: "bookMasterOutline",
@@ -691,21 +698,21 @@ Example:
       }
     ];
 
-    // Get the template ID from the URL, e.g., ?template=bookMasterOutline
+    // Get the template ID from the URL query parameter, e.g., ?template=bookMasterOutline
     const params = new URLSearchParams(window.location.search);
     const templateId = params.get('template');
 
-    // Find the matching template
+    // Find the matching template object
     const template = preMadeTemplates.find(t => t.id === templateId);
 
     if (!template) {
       document.getElementById('pdfPreview').innerHTML = '<p>Template not found.</p>';
       document.getElementById('useTemplateBtn').style.display = 'none';
     } else {
-      // Inject content
+      // Inject the template content into the PDF-like preview area
       document.getElementById('pdfPreview').innerHTML = `<h2>${template.title}</h2><pre>${template.content}</pre>`;
 
-      // Replace the button with a helper message
+      // Replace the "Use Template" button with a helpful message
       const btn = document.getElementById('useTemplateBtn');
       const message = document.createElement('p');
       message.style.marginTop = '16px';
@@ -716,7 +723,7 @@ Example:
       btn.replaceWith(message);
     }
 
-    // Tabs redirect
+    // Set up top tab behavior – redirect to their respective pages.
     document.getElementById('myTemplatesTab').addEventListener('click', () => {
       window.location.href = 'story-templates.html';
     });
