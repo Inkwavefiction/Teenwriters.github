@@ -12,7 +12,7 @@
       --bg: #f5f8f7;
       --text: #1e1e1e;
       --muted: #6a6a6a;
-      --accent: #A3C4DC; /* Haze Blue */
+      --accent: #A3C4DC;
       --white: #ffffff;
       --border: #e0e0e0;
       --container-bg: #ffffff;
@@ -45,7 +45,9 @@
       margin-left: 320px;
       padding: 2.5rem;
       flex: 1;
+      min-width: 0; /* prevents weird shrinking that can kill grid columns */
     }
+
     .header {
       text-align: center;
       padding: 20px 0;
@@ -54,17 +56,22 @@
       border-radius: 6px;
       margin-bottom: 30px;
     }
-    .header h1 { 
-      font-size: 2.5rem; 
-      margin: 0; 
+    .header h1 {
+      font-size: 2.5rem;
+      margin: 0;
       font-family: 'Playfair Display', serif;
     }
     .header p { font-size: 1.2rem; margin-top: 10px; }
+
+    /* Make sure container spans full width (override any global .container rules) */
     .container {
       background: var(--container-bg);
       padding: 30px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: none;      /* ⬅ ensure full width */
+      margin: 0;            /* ⬅ no auto-centering constraint */
     }
 
     /* Top Tabs */
@@ -72,6 +79,7 @@
       display: flex;
       border-bottom: 2px solid var(--border);
       margin-bottom: 25px;
+      overflow-x: auto;
     }
     .tab-link {
       padding: 12px 24px;
@@ -84,6 +92,7 @@
       transition: background 0.3s, box-shadow 0.3s;
       font-size: 16px;
       font-weight: 500;
+      white-space: nowrap;
     }
     .tab-link:hover { background: #dce3ea; }
     .tab-link.active {
@@ -95,27 +104,36 @@
     /* Templates Grid */
     .templates-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 0px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* ⬅ more flexible */
+      gap: 20px;                    /* ⬅ spacing between cards */
+      width: 100%;                  /* ⬅ use full container width */
     }
+
+    /* Make cards fill their grid cells fully */
     .template-card {
       border: 1px solid var(--border);
       background: #fdfdfd;
       padding: 20px;
-      border-radius: 6px;
-      transition: background 0.3s, box-shadow 0.3s;
+      border-radius: 10px;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
       cursor: pointer;
-      min-height: 120px; /* long rectangle */
+
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      height: 100%;                 /* ⬅ fill row height */
+      min-height: 160px;            /* ⬅ keep a nice size */
     }
     .template-card:hover {
       background: #f0f4f8;
       box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
     }
-    .template-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
-    .template-card p { font-size: 0.95rem; color: var(--muted); }
+    .template-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .template-card p { font-size: 0.98rem; color: var(--muted); }
+
+    /* Optional: equal row heights no matter content length */
+    .templates-grid { grid-auto-rows: 1fr; }
   </style>
 </head>
 <body>
@@ -136,6 +154,7 @@
         <button class="tab-link" id="myTemplatesTab">My Templates</button>
         <button class="tab-link active" id="allTemplatesTab">All Templates</button>
       </div>
+
       <!-- Tab Content Area -->
       <div id="tabContent">
         <div id="allTemplatesContent">
@@ -150,75 +169,35 @@
   <script>
     // Pre-made Templates Data
     const preMadeTemplates = [
-      {
-        id: "bookMasterOutline",
-        title: "Book Master Outline Template",
-        description: "A comprehensive outline for novels with bonus plot framework options."
-      },
-      {
-        id: "ultimateCharacterTemplate",
-        title: "Ultimate Character Template",
-        description: "A detailed template covering basic info, psych profile, and relational dynamics."
-      },
-      {
-        id: "magicTechSystemTemplate",
-        title: "Magic/Technology System Template",
-        description: "Outline for designing a magic or tech system with rules, limits, and cultural significance."
-      },
-      {
-        id: "worldbuildingMasterTemplate",
-        title: "Worldbuilding Master Template",
-        description: "A template for building a rich world with detailed setting, culture, and key locations."
-      },
-      {
-        id: "chapterPlanningTemplate",
-        title: "Chapter Planning Template (Expanded)",
-        description: "An expanded template for detailed chapter planning."
-      },
-      {
-        id: "scenePlanningTemplate",
-        title: "Scene Planning Template (Drill-down)",
-        description: "A drill-down template for planning individual scenes in detail."
-      },
-      {
-        id: "themeSymbolismMap",
-        title: "Theme & Symbolism Map",
-        description: "A grid template to map themes and symbolism across your narrative."
-      },
-      {
-        id: "foreshadowingTracker",
-        title: "Foreshadowing Tracker",
-        description: "A tracker for managing setup and payoff of foreshadowing elements."
-      },
-      {
-        id: "revisionChecklistTemplate",
-        title: "Revision Checklist Template",
-        description: "A comprehensive checklist to ensure consistency and quality in your manuscript."
-      },
-      {
-        id: "shortStoryOutlineTemplate",
-        title: "Short Story Outline Template",
-        description: "An outline template designed specifically for short stories."
-      }
+      { id: "bookMasterOutline",        title: "Book Master Outline Template",        description: "A comprehensive outline for novels with bonus plot framework options." },
+      { id: "ultimateCharacterTemplate", title: "Ultimate Character Template",         description: "A detailed template covering basic info, psych profile, and relational dynamics." },
+      { id: "magicTechSystemTemplate",   title: "Magic/Technology System Template",    description: "Outline for designing a magic or tech system with rules, limits, and cultural significance." },
+      { id: "worldbuildingMasterTemplate", title: "Worldbuilding Master Template",     description: "A template for building a rich world with detailed setting, culture, and key locations." },
+      { id: "chapterPlanningTemplate",   title: "Chapter Planning Template (Expanded)", description: "An expanded template for detailed chapter planning." },
+      { id: "scenePlanningTemplate",     title: "Scene Planning Template (Drill-down)", description: "A drill-down template for planning individual scenes in detail." },
+      { id: "themeSymbolismMap",         title: "Theme & Symbolism Map",               description: "A grid template to map themes and symbolism across your narrative." },
+      { id: "foreshadowingTracker",      title: "Foreshadowing Tracker",               description: "A tracker for managing setup and payoff of foreshadowing elements." },
+      { id: "revisionChecklistTemplate", title: "Revision Checklist Template",         description: "A comprehensive checklist to ensure consistency and quality in your manuscript." },
+      { id: "shortStoryOutlineTemplate", title: "Short Story Outline Template",        description: "An outline template designed specifically for short stories." }
     ];
 
     // Render templates
     function renderTemplates() {
       const grid = document.getElementById('templatesGrid');
       grid.innerHTML = '';
-      preMadeTemplates.forEach(template => {
+      preMadeTemplates.forEach(t => {
         const card = document.createElement('div');
         card.className = 'template-card';
-        card.innerHTML = `<h3>${template.title}</h3><p>${template.description}</p>`;
+        card.innerHTML = `<h3>${t.title}</h3><p>${t.description}</p>`;
         card.addEventListener('click', () => {
-          window.location.href = `template-view.html?template=${encodeURIComponent(template.id)}`;
+          window.location.href = `template-view.html?template=${encodeURIComponent(t.id)}`;
         });
         grid.appendChild(card);
       });
     }
     renderTemplates();
 
-    // Tab switching
+    // Tabs
     document.getElementById('myTemplatesTab').addEventListener('click', () => {
       window.location.href = 'story-templates.html';
     });
