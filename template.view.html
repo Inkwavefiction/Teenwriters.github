@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>window.allowedRoles = ["author","both"];</script>
+  <script src="role-guard.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team Writers - View Template</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f8f7;
+      --text: #1e1e1e;
+      --muted: #6a6a6a;
+      --accent: #A3C4DC; /* Haze Blue */
+      --white: #ffffff;
+      --border: #e0e0e0;
+      --container-bg: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+    }
+
+    /* Correct 320px embedded sidebar */
+    #sidebar {
+      width: 320px;
+      height: 100vh;
+      flex-shrink: 0;
+      border-right: 1px solid #ccc;
+      overflow: hidden;
+    }
+    #sidebar object {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 320px; /* matches embedded sidebar */
+      padding: 2.5rem;
+      flex: 1;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px 0;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .header h1 { font-size: 2.5rem; margin: 0; font-family: 'Playfair Display', serif; }
+    .header p { font-size: 1.2rem; margin-top: 10px; }
+    .back-link {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--accent);
+      color: var(--white);
+      padding: 6px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+    .back-link:hover { background: #7aa7d1; }
+
+    .container {
+      background: var(--container-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 25px;
+    }
+    .tab-link {
+      padding: 12px 24px;
+      background: #e9edf1;
+      border: none;
+      cursor: pointer;
+      margin-right: 8px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      transition: background 0.3s, box-shadow 0.3s;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .tab-link:hover { background: #dce3ea; }
+    .tab-link.active {
+      background: var(--container-bg);
+      border-bottom: 3px solid var(--accent);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* PDF-like preview */
+    .pdf-preview {
+      background: #fff;
+      padding: 30px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      font-family: 'Roboto', sans-serif;
+      max-height: 70vh;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .pdf-preview pre {
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: #f8f9fa;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .use-template-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .use-template-btn:hover { background: #7aa7d1; }
+  </style>
+</head>
+<body>
+  <!-- Correct embedded sidebar -->
+  <div id="sidebar">
+    <object type="text/html" data="sidebar.html"></object>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main">
+    <div class="header">
+      <a href="all-templates.html" class="back-link">Back</a>
+      <h1>Team Writers – View Template</h1>
+      <p>Preview and use this template for your story</p>
+    </div>
+
+    <div class="container">
+      <!-- Top Tabs -->
+      <div class="tabs" id="tabsContainer">
+        <button class="tab-link" id="myTemplatesTab">My Templates</button>
+        <button class="tab-link" id="allTemplatesTab">All Templates</button>
+        <button class="tab-link active" id="currentTemplateTab">Current Template</button>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="tabContent">
+        <div class="tab-content active" id="currentTemplateContent">
+          <div class="pdf-preview" id="pdfPreview"><!-- injected --></div>
+          <button class="use-template-btn" id="useTemplateBtn">Use Template</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Full template data (as in your version)
+    const preMadeTemplates = [
+      {
+        id: "bookMasterOutline",
+        title: "Book Master Outline Template",
+        type: "book-outline",
+        description: "A comprehensive outline for novels with bonus plot framework options.",
+        content: `Title:
+Genre:
+Subgenre:
+Series Name (if applicable):
+Book # in Series:
+Target Word Count:
+Premise (Elevator Pitch):
+Core Themes:
+POV(s):
+Tense:
+Tone & Style:
+Target Audience:
+
+Choose Your Plot Framework (Pick One):
+- Three-Act Structure
+- Save the Cat Beat Sheet
+- Hero’s Journey
+- Seven-Point Plot
+- Dan Harmon's Story Circle
+- Snowflake Method
+
+Bonus: ALWAYS include:
+- Opening Hook
+- Inciting Incident
+- Point of No Return
+- Midpoint Shift
+- Climactic Confrontation
+- Character’s Final Transformation
+- Denouement / Fallout`
+      },
+      {
+        id: "ultimateCharacterTemplate",
+        title: "Ultimate Character Template",
+        type: "character-template",
+        description: "A detailed template covering basic info, psych profile, and relational dynamics.",
+        content: `Basic Info:
+Name:
+Age:
+Pronouns / Gender Identity:
+Occupation:
+Appearance (Key Traits Only):
+Voice (Tone, Accent, Mannerisms):
+
+Psych Profile:
+MBTI / Enneagram:
+Primary Fear:
+Core Desire:
+Moral Code / Ethics:
+Darkest Secret:
+Greatest Strength:
+Greatest Flaw:
+Internal Conflict:
+External Conflict:
+Character Arc (How do they change?)
+
+Relational Map:
+Allies:
+Enemies:
+Mentor / Guide:
+Love Interest:
+Rivals:
+Dependents:
+Who do they hurt / who hurts them?
+
+Role in Story:
+Protagonist / Antagonist / Supporting?
+Symbolic Role (Hero, Shadow, Trickster, etc)?
+What Theme They Represent?
+Purpose in Plot?`
+      },
+      {
+        id: "magicTechSystemTemplate",
+        title: "Magic/Technology System Template",
+        type: "system-template",
+        description: "Outline for designing a magic or tech system with rules, limits, and cultural significance.",
+        content: `System Type: (Magic, Tech, Mutation, Superpower, etc)
+Source of Power:
+Who Can Use It:
+Rules / Logic:
+Costs / Limits:
+Cultural Significance:
+Items / Tools Required:
+Types / Classifications:
+Dangers / Corruption Possibility:
+Exceptions / Anomalies:`
+      },
+      {
+        id: "worldbuildingMasterTemplate",
+        title: "Worldbuilding Master Template",
+        type: "worldbuilding-template",
+        description: "A template for building a rich world with detailed setting, culture, and key locations.",
+        content: `General Setting:
+Time Period:
+Region / Planet:
+Climate / Geography:
+Technology Level:
+Economy:
+Laws / Government:
+Currency:
+Language(s):
+Religion / Myth:
+
+Culture:
+Traditions / Holidays:
+Art / Music / Food:
+Fashion:
+Social Hierarchy:
+Taboos:
+Historical Trauma or Wars:
+Superstitions:
+Key Places (Name + Description):
+
+Map It Out:
+(List regions, key cities, strongholds, secret places, sacred locations, etc.)`
+      },
+      {
+        id: "chapterPlanningTemplate",
+        title: "Chapter Planning Template (Expanded)",
+        type: "chapter-planning",
+        description: "An expanded template for detailed chapter planning.",
+        content: `Chapter #:
+Title (if applicable):
+POV Character:
+Word Count Target:
+Scene 1 Summary:
+- Goal:
+- Conflict:
+- Outcome:
+Scene 2 (if applicable):
+- Repeat structure as needed
+Cliffhanger / Hook:
+Foreshadowing Elements:
+Character Moments:
+Ties to Subplots:`
+      },
+      {
+        id: "scenePlanningTemplate",
+        title: "Scene Planning Template (Drill-down)",
+        type: "scene-planning",
+        description: "A drill-down template for planning individual scenes in detail.",
+        content: `Scene #:
+Chapter:
+Scene Purpose (Advancing plot, revealing character, worldbuilding, etc):
+Characters Involved:
+Tension Source:
+Start State → End State:
+Setting Description Highlights:
+Dialogue Focus (Subtext / Power Play):
+Sensory Layering:
+Scene Hook:`
+      },
+      {
+        id: "themeSymbolismMap",
+        title: "Theme & Symbolism Map",
+        type: "theme-symbolism",
+        description: "A grid template to map themes and symbolism across your narrative.",
+        content: `Theme:
+How It Appears:
+Characters Tied:
+Key Scenes:
+Additional Notes:`
+      },
+      {
+        id: "foreshadowingTracker",
+        title: "Foreshadowing Tracker",
+        type: "foreshadowing",
+        description: "A tracker for managing setup and payoff of foreshadowing elements.",
+        content: `Setup Scene:
+Payoff Scene:
+Detail Foreshadowed:
+Subtle or Obvious:
+Notes:`
+      },
+      {
+        id: "revisionChecklistTemplate",
+        title: "Revision Checklist Template",
+        type: "revision-checklist",
+        description: "A comprehensive checklist to ensure consistency and quality in your manuscript.",
+        content: `Global Checks:
+- Theme consistency
+- Complete character arcs
+- Effective tension curve
+- Filled worldbuilding gaps
+- Consistent timeline
+
+Chapter-Level:
+- Clear scene purpose
+- Tight, in-character dialogue
+- No POV slips
+- Effective sensory details
+- Every scene has conflict`
+      },
+      {
+        id: "shortStoryOutlineTemplate",
+        title: "Short Story Outline Template",
+        type: "short-story-outline",
+        description: "An outline template designed specifically for short stories.",
+        content: `Title:
+Genre:
+Theme:
+Character (Name, Goal, Flaw):
+Conflict:
+Inciting Incident:
+Climax / Turn:
+Resolution:
+Word Count Limit:
+Twist or Punch (if any):
+Mood / Style Notes:`
+      },
+      {
+        id: "shortStoryChecklist",
+        title: "Short Story Checklist",
+        type: "short-story-checklist",
+        description: "A checklist ensuring your short story is concise and impactful.",
+        content: `- Open with a hook in the first sentence/paragraph
+- Establish clear conflict by paragraph 3
+- Every word counts (no fluff)
+- One core emotion/theme runs throughout
+- Ending ties back to the beginning or subverts expectations
+- Language fits the tone (tight, poetic, brutal, etc.)`
+      },
+      {
+        id: "flashFictionSnapshotPlanner",
+        title: "Flash Fiction Snapshot Planner",
+        type: "flash-fiction",
+        description: "A planner for crafting flash fiction pieces under 1,000 words.",
+        content: `Prompt:
+Core Image or Moment:
+Character:
+Implied Backstory:
+Twist or Turn:
+Final Line Impact:`
+      },
+      {
+        id: "fantasyWorldBuilding",
+        title: "Fantasy Worldbuilding Template (Expanded)",
+        type: "worldbuilding",
+        description: "An expanded template for creating detailed and immersive fantasy worlds.",
+        content: `World Name:  
+Primary Setting (Continent, City, Realm):  
+Time Period / Era Equivalent (Medieval, Bronze Age, etc.):  
+Map? (Yes/No – describe key regions if no map)
+
+Geography:
+- Terrain Types:
+- Notable Landmarks:
+- Borders, Barriers, Magical Zones:
+
+Kingdoms/Nations:
+- Name:
+- Government Type:
+- Ruler(s):
+- Allies/Enemies:
+- Symbol / Colors:
+- Known For:
+
+Cultures:
+- Languages:
+- Religion(s):
+- Holidays / Festivals:
+- Social Hierarchies:
+- Gender Roles / Norms:
+- Common Taboos:
+
+History & Lore:
+- Origin Myth:
+- Major War(s):
+- Legendary Heroes:
+- Cursed Events or Items:
+- Prophecies:
+
+Factions / Orders:
+- Guilds, Cults, Academies, Armies:
+- Role in World:
+- Who opposes them:
+
+Economy:
+- Currency:
+- Trade Goods:
+- Black Market?
+
+Technology Level:
+- Weapons:
+- Transport:
+- Communication:
+
+Creatures / Races:
+- Sentient Races:
+- Unique Creatures / Beasts:
+- Extinct or Mythical Beings:
+
+Otherworlds:
+- Underworlds? Spirit realms? Dream planes?
+- How are they accessed?
+
+Quirks of the World:
+- Examples: Blood moons cause magic surges, mountains are sentient, truth must be sung, etc.`
+      },
+      {
+        id: "magicSystemBlueprint",
+        title: "Magic System Blueprint",
+        type: "magic-system",
+        description: "A blueprint for designing your magic system, including mechanics, limitations, and societal impact.",
+        content: `System Name (if any):  
+Source of Magic:  
+Who Can Use It:
+- Inborn, trained, gifted, cursed, divine?
+
+Magic Classes/Types:
+- Elemental, spiritual, blood, rune-based, etc.
+
+Mechanics & Rules:
+- How does it work?
+- What fuels it?
+- Spells? Runes? Rituals?
+
+Limitations:
+- Energy cost? Mental strain? Life span?
+
+Consequences:
+- Mutations? Sanity loss? Backlash?
+
+Learning Magic:
+- Formal school? Hidden scrolls? Instinctual?
+
+Society & Magic:
+- Feared? Worshipped? Commonplace? Illegal?
+
+Objects / Weapons:
+- Enchanted Items:
+- Legendary Artifacts:
+- Cursed Tools:
+
+Magical Creatures:
+- Origin:
+- Role in magic system:`
+      },
+      {
+        id: "kingdomFaction",
+        title: "Kingdom / Faction Template",
+        type: "faction",
+        description: "A template for designing kingdoms or factions with details on leadership, culture, and conflict.",
+        content: `Name:  
+Type: (Empire, Clan, Theocracy, Merchant Guild, etc.)  
+Leader / Council:  
+Military Power:  
+Values / Culture:  
+Economy Strength:  
+Secrets:  
+Magic Policy:  
+Rivalries:  
+Key NPCs:  
+Unique Laws or Traditions:`
+      },
+      {
+        id: "prophecyTemplate",
+        title: "Prophecy Template",
+        type: "prophecy",
+        description: "A template to create impactful prophecies that drive your narrative.",
+        content: `Prophecy Name / Title:  
+What It Says (Actual Wording):  
+Hidden Meaning (If any):  
+Who Believes It:  
+Who Fears It:  
+How It Drives the Plot:  
+Who It Might Refer To:  
+Symbolism / Metaphors Involved:`
+      },
+      {
+        id: "fantasyHeroCharacter",
+        title: "Fantasy Hero Character Template",
+        type: "character",
+        description: "A template for designing a fantasy hero with detailed attributes and narrative role.",
+        content: `Name:  
+Race / Species:  
+Age / Appearance:  
+Role (Protagonist, Sidekick, Mentor, etc.):  
+Class / Archetype (Knight, Mage, Rogue, etc.):  
+Backstory:  
+Magical Abilities (if any):  
+Weapon(s):  
+Moral Code:  
+Goal:  
+Flaw:  
+Fear:  
+Hidden Power or Destiny:  
+Relationship to Prophecy (if any):  
+Allies:
+- Mounts, Familiars, Sentient Swords welcome`
+      },
+      {
+        id: "fantasyCreatureBuilder",
+        title: "Fantasy Creature Builder",
+        type: "creature",
+        description: "A template for creating unique fantasy creatures with distinct traits and lore.",
+        content: `Name:  
+Origin / Myth:  
+Habitat:  
+Appearance:  
+Powers / Traits:  
+Behavior:  
+How It Affects the World:  
+Are They Hunted / Worshipped / Avoided?  
+Connection to Magic?  
+Weaknesses / Vulnerabilities:`
+      },
+      {
+        id: "fantasyPlotStructure",
+        title: "Fantasy Plot Structure Overlay (with Save the Cat Beats)",
+        type: "plot-structure",
+        description: "A detailed plot structure template incorporating Save the Cat beats for epic fantasy narratives.",
+        content: `Use this if you're doing epic fantasy, high-stakes adventure, or chosen-one arcs.
+
+Opening Image:
+Theme Stated:
+Set-Up:
+Catalyst:
+Debate:
+Break into Two:
+B Story:
+Fun & Games:
+Midpoint:
+Bad Guys Close In:
+All is Lost:
+Dark Night:
+Break into Three:
+Finale:
+Final Image:`
+      },
+      {
+        id: "magicSchoolGuild",
+        title: "Magic School / Guild Template",
+        type: "institution",
+        description: "A template for designing a magic school or guild, detailing structure, philosophy, and notable members.",
+        content: `Name:  
+Type: (Academy, Sect, Cult, Secret Order)  
+Entry Requirements:  
+Ranking System / Classes:  
+Core Philosophy / Belief:  
+What They Teach:  
+Graduation / Mastery Trials:  
+Uniforms / Rituals / Codes:  
+Notable Members / Legends:  
+Who Hates Them and Why:`
+      },
+      {
+        id: "magicDuelCombat",
+        title: "Magic Duel / Combat Template",
+        type: "combat",
+        description: "A template for planning dynamic magic duels or combat encounters.",
+        content: `Combatants:  
+Location:  
+Stakes:  
+Power Used:  
+Spell/Technique Highlights:  
+Power Shift Moments:  
+Damage / Backlash:  
+Victory Condition:  
+Moral Cost (if any):  
+Environmental Effect:  
+Aftermath:`
+      },
+      {
+        id: "artifactRelicTemplate",
+        title: "Artifact / Relic Template",
+        type: "artifact",
+        description: "A template for creating significant artifacts or relics with unique properties.",
+        content: `Name:  
+Origin / Who Made It:  
+Appearance:  
+Powers:  
+Activation Requirements:  
+Who Seeks It:  
+Why It’s Dangerous:  
+Where It’s Hidden:  
+Failsafe / Curse / Trap Attached:`
+      },
+      {
+        id: "sideQuestGenerator",
+        title: "Side Quest Generator (World Enrichment)",
+        type: "side-quest",
+        description: "A generator template to brainstorm and structure enriching side quests.",
+        content: `Quest Name:  
+Type: (Fetch, Escort, Kill, Mystery, Puzzle)  
+Client / NPC:  
+Hook:  
+Twist:  
+Moral Dilemma (Optional):  
+Ties to Main Plot?  
+Reward:`
+      },
+      {
+        id: "fantasyDialogueEnhancer",
+        title: "Fantasy Dialogue Flavor Enhancer",
+        type: "dialogue",
+        description: "A template to add authentic, flavorful dialogue with distinct character voices.",
+        content: `Character:  
+Speech Style: (Formal, Rustic, Cryptic, Archaic)  
+Swears / Slang:  
+Catchphrases or Repeated Words:  
+How They Speak of Magic:  
+Religious Phrases / Curses:
+Example:
+“By the roots of Ygg’thor’s beard!”
+“May the Night Queen turn your soul to ash.”`
+      }
+    ];
+
+    // Get the template ID from the URL, e.g., ?template=bookMasterOutline
+    const params = new URLSearchParams(window.location.search);
+    const templateId = params.get('template');
+
+    // Find the matching template
+    const template = preMadeTemplates.find(t => t.id === templateId);
+
+    if (!template) {
+      document.getElementById('pdfPreview').innerHTML = '<p>Template not found.</p>';
+      document.getElementById('useTemplateBtn').style.display = 'none';
+    } else {
+      // Inject content
+      document.getElementById('pdfPreview').innerHTML = `<h2>${template.title}</h2><pre>${template.content}</pre>`;
+
+      // Replace the button with a helper message
+      const btn = document.getElementById('useTemplateBtn');
+      const message = document.createElement('p');
+      message.style.marginTop = '16px';
+      message.style.fontSize = '1rem';
+      message.style.color = '#555';
+      message.style.fontWeight = '500';
+      message.textContent = 'To use this template, copy its contents into a new custom template.';
+      btn.replaceWith(message);
+    }
+
+    // Tabs redirect
+    document.getElementById('myTemplatesTab').addEventListener('click', () => {
+      window.location.href = 'story-templates.html';
+    });
+    document.getElementById('allTemplatesTab').addEventListener('click', () => {
+      window.location.href = 'all-templates.html';
+    });
+  </script>
+</body>
+</html>
