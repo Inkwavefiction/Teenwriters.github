@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>window.allowedRoles = ["author","both"];</script>
+  <script src="role-guard.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New Template – Team Writers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f8f7;
+      --text: #1e1e1e;
+      --muted: #6a6a6a;
+      --accent: #A3C4DC;
+      --white: #ffffff;
+      --border: #e0e0e0;
+      --container-bg: #ffffff;
+    }
+    * { box-sizing: border-box; }
 
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+    }
+
+    /* Embedded sidebar */
+    #sidebar {
+      width: 320px;
+      height: 100vh;
+      flex-shrink: 0;
+      border-right: 1px solid #ccc;
+      overflow: hidden;
+    }
+    #sidebar object {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+
+    .main {
+      margin-left: 320px;
+      padding: 2.5rem;
+      flex: 1;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px 0;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+    }
+    .header p { font-size: 1.2rem; margin-top: 10px; }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 25px;
+    }
+    .tab-link {
+      padding: 12px 24px;
+      background: #e9edf1;
+      margin-right: 8px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      font-size: 16px;
+      font-weight: 500;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .tab-link:hover { background: #dce3ea; }
+    .tab-link.active {
+      background: var(--container-bg);
+      border-bottom: 3px solid var(--accent);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      background: var(--container-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1.5rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    textarea { height: 300px; resize: vertical; }
+
+    .btn {
+      margin-top: 1.5rem;
+      background-color: var(--accent);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover { background-color: #7aa7d1; }
+
+    .message { margin-top: 1rem; font-weight: 500; }
+    .error { color: red; }
+    .success { color: green; }
+
+    .warning {
+      margin-top: 1rem;
+      color: #c0392b;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar embed -->
+  <div id="sidebar">
+    <object type="text/html" data="sidebar.html"></object>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="header">
+      <h1>Create New Template</h1>
+      <p>Paste your copied template here!</p>
+    </div>
+
+    <div class="container">
+      <div class="tabs">
+        <a href="story-templates.html" class="tab-link">My Templates</a>
+        <a href="all-templates.html" class="tab-link">All Templates</a>
+        <button class="tab-link active">New Template</button>
+      </div>
+
+      <label for="templateTitle">Title</label>
+      <input type="text" id="templateTitle" placeholder="Template title..." />
+
+      <label for="templateContent">Content</label>
+      <textarea id="templateContent" placeholder="Paste the full template content here..."></textarea>
+
+      <p class="warning">⚠️ Once saved, templates are finalized and cannot be edited.</p>
+
+      <button class="btn" onclick="saveTemplate()">✅ Save Template</button>
+
+      <div class="message" id="saveMessage"></div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJRW3QHNYAucAn0XJEN-w7CJfOAa0NzIE",
+      authDomain: "inkwave-549c0.firebaseapp.com",
+      projectId: "inkwave-549c0",
+      storageBucket: "inkwave-549c0.appspot.com",
+      messagingSenderId: "1084811926133",
+      appId: "1:1084811926133:web:auto-generated"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    let currentUser = null;
+    auth.onAuthStateChanged(user => {
+      if (user) currentUser = user;
+    });
+
+    function saveTemplate() {
+      const title = document.getElementById("templateTitle").value.trim();
+      const content = document.getElementById("templateContent").value.trim();
+      const messageDiv = document.getElementById("saveMessage");
+
+      if (!title || !content) {
+        messageDiv.textContent = "Please fill out both fields.";
+        messageDiv.className = "message error";
+        return;
+      }
+
+      if (!currentUser) {
+        messageDiv.textContent = "You must be logged in.";
+        messageDiv.className = "message error";
+        return;
+      }
+
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("templates")
+        .add({
+          title,
+          content,
+          type: "custom",
+          status: "final",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+          messageDiv.textContent = "✅ Template saved!";
+          messageDiv.className = "message success";
+          document.getElementById("templateTitle").value = "";
+          document.getElementById("templateContent").value = "";
+        })
+        .catch(err => {
+          console.error("Error saving:", err);
+          messageDiv.textContent = "Failed to save.";
+          messageDiv.className = "message error";
+        });
+    }
+  </script>
+</body>
+</html>
